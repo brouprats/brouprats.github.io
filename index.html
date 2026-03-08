@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio — El Teu Nom</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f2eb;
+      --bg2: #ede9e0;
+      --ink: #1a1a18;
+      --ink2: #3d3d38;
+      --muted: #8a8778;
+      --rule: #ccc9be;
+      --red: #c0392b;
+      --blue: #1a4a7a;
+      --green: #1a6b45;
+      --ff-mono: 'JetBrains Mono', 'Courier New', monospace;
+      --ff-serif: 'EB Garamond', Georgia, serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--ff-serif);
+      font-size: 17px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--rule) 1px, transparent 1px),
+        linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    main { position: relative; z-index: 1; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(245,242,235,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--rule);
+      padding: 0.9rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-id {
+      font-family: var(--ff-mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+    .nav-id strong { color: var(--ink); font-weight: 600; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--ff-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      padding: 8rem 3rem 5rem;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .hero-label {
+      font-family: var(--ff-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.1s forwards;
+    }
+    .hero-label::before { content: '// '; color: var(--green); }
+
+    .hero h1 {
+      font-family: var(--ff-serif);
+      font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.25s forwards;
+    }
+
+    .hero-eq {
+      font-family: var(--ff-mono);
+      font-size: clamp(0.82rem, 1.3vw, 1rem);
+      color: var(--blue);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.4s forwards;
+    }
+    .hero-eq .eq-comment { color: var(--muted); }
+
+    .hero-desc {
+      color: var(--ink2);
+      font-size: 1.05rem;
+      max-width: 460px;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.55s forwards;
+      font-style: italic;
+    }
+
+    .hero-cta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.7s forwards;
+    }
+    .btn {
+      font-family: var(--ff-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      padding: 0.65rem 1.6rem;
+      text-decoration: none;
+      border: 1px solid;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+    .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .btn-primary:hover { background: var(--blue); border-color: var(--blue); }
+    .btn-outline { background: transparent; color: var(--ink); border-color: var(--rule); }
+    .btn-outline:hover { border-color: var(--ink); }
+
+    .hero-chart {
+      opacity: 0;
+      animation: fadeIn 1s 0.8s forwards;
+    }
+    .chart-label {
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.08em;
+    }
+    .chart-wrap {
+      border: 1px solid var(--rule);
+      background: rgba(255,255,255,0.5);
+      padding: 1.5rem 1.5rem 1rem;
+    }
+    .chart-wrap canvas { width: 100% !important; display: block; }
+    .chart-meta {
+      display: flex; justify-content: space-between;
+      margin-top: 0.75rem;
+      font-family: var(--ff-mono);
+      font-size: 0.62rem;
+      color: var(--muted);
+    }
+    .chart-meta .up { color: var(--green); }
+
+    /* SECTIONS */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
+    section { padding: 6rem 0; border-top: 1px solid var(--rule); }
+
+    .sec-header {
+      display: flex; align-items: baseline; gap: 1.2rem;
+      margin-bottom: 4rem;
+    }
+    .sec-num { font-family: var(--ff-mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; }
+    .sec-title { font-family: var(--ff-serif); font-size: 2.2rem; font-weight: 400; }
+
+    /* PROJECT */
+    .project-block { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+
+    .project-tag-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .ptag {
+      font-family: var(--ff-mono); font-size: 0.65rem; letter-spacing: 0.1em;
+      padding: 0.2em 0.6em; border: 1px solid var(--rule); color: var(--muted); text-transform: uppercase;
+    }
+    .ptag.hl { border-color: var(--blue); color: var(--blue); }
+
+    .project-title { font-family: var(--ff-serif); font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.2rem; }
+    .project-title em { font-style: italic; color: var(--blue); }
+    .project-desc { color: var(--ink2); margin-bottom: 2rem; }
+
+    .theorem-box {
+      border-left: 3px solid var(--blue);
+      padding: 1rem 1.5rem;
+      background: rgba(26,74,122,0.04);
+      margin: 1.5rem 0;
+    }
+    .th-label { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--blue); letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+    .theorem-box p { font-style: italic; font-size: 0.95rem; color: var(--ink2); }
+
+    .metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 2rem 0; }
+    .metric { background: var(--bg); padding: 1.2rem; text-align: center; }
+    .metric-val { font-family: var(--ff-mono); font-size: 1.5rem; color: var(--ink); font-weight: 600; }
+    .metric-val.pos { color: var(--green); }
+    .metric-lbl { font-family: var(--ff-mono); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.3rem; }
+
+    .arch-diagram { border: 1px solid var(--rule); background: rgba(255,255,255,0.5); padding: 2rem; }
+    .arch-title { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 1.5rem; text-transform: uppercase; }
+    .arch-layers { display: flex; flex-direction: column; gap: 0.6rem; }
+    .arch-box {
+      padding: 0.6rem 1rem; border: 1px solid;
+      font-family: var(--ff-mono); font-size: 0.7rem; letter-spacing: 0.05em; text-align: center;
+    }
+    .arch-box.input { border-color: var(--muted); color: var(--muted); }
+    .arch-box.lstm { border-color: var(--blue); color: var(--blue); background: rgba(26,74,122,0.05); }
+    .arch-box.lstm2 { border-color: var(--blue); color: var(--blue); background: rgba(26,74,122,0.03); }
+    .arch-box.dropout { border-color: var(--muted); color: var(--muted); font-style: italic; font-size: 0.65rem; }
+    .arch-box.dense { border-color: var(--green); color: var(--green); background: rgba(26,107,69,0.05); }
+    .arch-box.output { border-color: var(--red); color: var(--red); background: rgba(192,57,43,0.05); }
+    .arch-arrow { font-family: var(--ff-mono); font-size: 0.8rem; color: var(--rule); text-align: center; }
+    .arch-note { margin-top: 1rem; font-family: var(--ff-mono); font-size: 0.62rem; color: var(--muted); line-height: 1.6; }
+    .arch-note span { color: var(--blue); }
+
+    .stack-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 1.5rem; }
+    .stack-item { background: var(--bg); padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.7rem; }
+    .stack-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .stack-name { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--ink2); }
+    .stack-role { font-family: var(--ff-mono); font-size: 0.6rem; color: var(--muted); margin-left: auto; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
+    .about-text p { color: var(--ink2); margin-bottom: 1.2rem; font-size: 1rem; }
+    .about-text p.lead { font-size: 1.2rem; font-style: italic; color: var(--ink); margin-bottom: 1.5rem; }
+
+    .skill-group { margin-bottom: 1.5rem; }
+    .skill-group-label { font-family: var(--ff-mono); font-size: 0.65rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .skill-pill { font-family: var(--ff-mono); font-size: 0.68rem; padding: 0.25em 0.7em; border: 1px solid var(--rule); color: var(--ink2); }
+
+    .edu-item { padding: 1.2rem 0; border-bottom: 1px solid var(--rule); }
+    .edu-degree { font-size: 1rem; font-weight: 600; }
+    .edu-uni { font-style: italic; color: var(--ink2); font-size: 0.95rem; }
+    .edu-period { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* CONTACT */
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+    .contact-text h2 { font-family: var(--ff-serif); font-size: 2.8rem; font-weight: 400; line-height: 1.15; margin-bottom: 1.2rem; }
+    .contact-text p { color: var(--ink2); margin-bottom: 1.5rem; font-style: italic; }
+
+    .contact-links { display: flex; flex-direction: column; }
+    .contact-link {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 0; border-bottom: 1px solid var(--rule);
+      text-decoration: none; color: var(--ink); transition: all 0.2s;
+    }
+    .contact-link:first-child { border-top: 1px solid var(--rule); }
+    .contact-link:hover { color: var(--blue); padding-left: 0.5rem; }
+    .cl-name { font-family: var(--ff-mono); font-size: 0.8rem; letter-spacing: 0.05em; }
+    .cl-handle { font-family: var(--ff-mono); font-size: 0.7rem; color: var(--muted); }
+    .cl-arrow { font-family: var(--ff-mono); font-size: 0.8rem; color: var(--rule); transition: color 0.2s; }
+    .contact-link:hover .cl-arrow { color: var(--blue); }
+
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 1.5rem 3rem;
+      display: flex; justify-content: space-between;
+      font-family: var(--ff-mono); font-size: 0.65rem; color: var(--muted);
+      position: relative; z-index: 1;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 4rem; gap: 3rem; }
+      .container { padding: 0 1.5rem; }
+      .project-block, .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      nav { padding: 0.9rem 1.5rem; }
+      .nav-links { display: none; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.3rem; }
+    }
+  </style>
+</head>
+<body>
+<main>
+
+  <nav>
+    <div class="nav-id">
+      <strong>Mateu Prats Munar</strong> &nbsp;/&nbsp; mathematician · ml researcher
+    </div>
+    <ul class="nav-links">
+      <li><a href="#projecte">projecte</a></li>
+      <li><a href="#sobre">sobre</a></li>
+      <li><a href="#contacte">contacte</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-label">estudiant universitari · quant research</div>
+      <h1>Matemàtiques<br>aplicades als<br>mercats financers</h1>
+      <div class="hero-eq">
+        h<sub>t</sub> = o<sub>t</sub> ⊙ tanh(C<sub>t</sub>) &nbsp;&nbsp;<span class="eq-comment">// LSTM cell output</span>
+      </div>
+      <p class="hero-desc">
+        Combino anàlisi matemàtica i aprenentatge profund per modelar la dinàmica de sèries temporals financeres.
+      </p>
+      <div class="hero-cta">
+        <a href="#projecte" class="btn btn-primary">veure projecte →</a>
+        <a href="#contacte" class="btn btn-outline">contactar</a>
+      </div>
+    </div>
+    <div class="hero-chart">
+      <div class="chart-label">// stock_predictor.py — output visualitzat</div>
+      <div class="chart-wrap">
+        <canvas id="heroChart" height="180"></canvas>
+        <div class="chart-meta">
+          <span>AAPL · 60 dies</span>
+          <span class="up">RMSE: 0.031</span>
+          <span>LSTM × 2 capes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTE -->
+  <section id="projecte">
+    <div class="container">
+      <div class="sec-header reveal">
+        <span class="sec-num">§01</span>
+        <h2 class="sec-title">Predicció d'accions amb LSTM</h2>
+      </div>
+      <div class="project-block">
+        <div class="project-left">
+          <div class="project-tag-row reveal">
+            <span class="ptag hl">Deep Learning</span>
+            <span class="ptag hl">Time Series</span>
+            <span class="ptag">Python</span>
+            <span class="ptag">Quant Finance</span>
+            <span class="ptag">TFG</span>
+          </div>
+          <h3 class="project-title reveal">
+            Xarxes <em>Long Short-Term Memory</em> per a la predicció de preus borsaris
+          </h3>
+          <p class="project-desc reveal">
+            Disseny i implementació d'un model de deep learning per predir el preu de tancament d'accions del mercat americà.
+            El model captura dependències temporals a llarg termini que models clàssics com ARIMA no poden representar adequadament.
+          </p>
+
+          <div class="theorem-box reveal">
+            <div class="th-label">HIPÒTESI DE RECERCA</div>
+            <p>Les sèries temporals financeres contenen patrons de memòria a llarg termini que les LSTM
+            poden aprendre sense feature engineering manual exhaustiu.</p>
+          </div>
+
+          <div class="metric-row reveal">
+            <div class="metric">
+              <div class="metric-val pos">0.031</div>
+              <div class="metric-lbl">RMSE</div>
+            </div>
+            <div class="metric">
+              <div class="metric-val pos">94.2%</div>
+              <div class="metric-lbl">Dir. Accuracy</div>
+            </div>
+            <div class="metric">
+              <div class="metric-val">60d</div>
+              <div class="metric-lbl">Lookback</div>
+            </div>
+          </div>
+
+          <p class="project-desc reveal" style="font-size:0.95rem;">
+            Les dades d'entrada inclouen preu de tancament, volum i indicadors tècnics (RSI, MACD, Bollinger Bands)
+            normalitzats amb MinMaxScaler. L'entrenament utilitza seqüències de 60 dies per predir t+1.
+          </p>
+
+          <div class="hero-cta reveal" style="margin-top:1.5rem;">
+            <a href="#" class="btn btn-primary">GitHub →</a>
+            <a href="#" class="btn btn-outline">Llegir memòria</a>
+          </div>
+        </div>
+
+        <div class="project-right reveal">
+          <div class="arch-diagram">
+            <div class="arch-title">// arquitectura del model</div>
+            <div class="arch-layers">
+              <div class="arch-box input">Input &nbsp;(60 timesteps × 8 features)</div>
+              <div class="arch-arrow">↓</div>
+              <div class="arch-box lstm">LSTM layer 1 &nbsp;(units=128, return_seq=True)</div>
+              <div class="arch-arrow">↓</div>
+              <div class="arch-box dropout">Dropout (0.2)</div>
+              <div class="arch-arrow">↓</div>
+              <div class="arch-box lstm2">LSTM layer 2 &nbsp;(units=64)</div>
+              <div class="arch-arrow">↓</div>
+              <div class="arch-box dropout">Dropout (0.2)</div>
+              <div class="arch-arrow">↓</div>
+              <div class="arch-box dense">Dense (32, relu)</div>
+              <div class="arch-arrow">↓</div>
+              <div class="arch-box output">Output (1) → preu_t+1</div>
+            </div>
+            <div class="arch-note">
+              optimizer: <span>Adam(lr=0.001)</span> · loss: <span>MSE</span><br>
+              epochs: <span>100</span> · batch_size: <span>32</span> · val_split: <span>0.15</span>
+            </div>
+          </div>
+
+          <div class="stack-grid">
+            <div class="stack-item">
+              <div class="stack-dot" style="background:#3b7dd8"></div>
+              <span class="stack-name">Python</span><span class="stack-role">core</span>
+            </div>
+            <div class="stack-item">
+              <div class="stack-dot" style="background:#e05c2a"></div>
+              <span class="stack-name">TensorFlow / Keras</span><span class="stack-role">model</span>
+            </div>
+            <div class="stack-item">
+              <div class="stack-dot" style="background:#4c9a52"></div>
+              <span class="stack-name">Pandas / NumPy</span><span class="stack-role">data</span>
+            </div>
+            <div class="stack-item">
+              <div class="stack-dot" style="background:#8c6fbd"></div>
+              <span class="stack-name">Matplotlib</span><span class="stack-role">viz</span>
+            </div>
+            <div class="stack-item">
+              <div class="stack-dot" style="background:#c09a30"></div>
+              <span class="stack-name">yfinance</span><span class="stack-role">dades</span>
+            </div>
+            <div class="stack-item">
+              <div class="stack-dot" style="background:#3b7dd8"></div>
+              <span class="stack-name">scikit-learn</span><span class="stack-role">preprocés</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="container">
+      <div class="sec-header reveal">
+        <span class="sec-num">§02</span>
+        <h2 class="sec-title">Sobre mi</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p class="lead">Soc estudiant de Matemàtiques, fascinat per la intersecció entre teoria formal i sistemes del món real.</p>
+          <p>El meu interès pels mercats financers no és especulatiu sinó matemàtic: les sèries temporals de preus borsaris són un banc de proves extraordinari per a mètodes d'aprenentatge automàtic, estocàstica i teoria de la informació.</p>
+          <p>Busco col·laborar amb equips que apliquen rigor quantitatiu per resoldre problemes de negoci, sigui en finance, tech o recerca.</p>
+
+          <div style="margin-top:2rem;">
+            <div class="skill-group">
+              <div class="skill-group-label">matemàtiques</div>
+              <div class="skill-pills">
+                <span class="skill-pill">Anàlisi real</span>
+                <span class="skill-pill">Estadística</span>
+                <span class="skill-pill">Probabilitat</span>
+                <span class="skill-pill">Optimització</span>
+                <span class="skill-pill">Àlgebra lineal</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <div class="skill-group-label">machine learning</div>
+              <div class="skill-pills">
+                <span class="skill-pill">LSTM / RNN</span>
+                <span class="skill-pill">Time Series</span>
+                <span class="skill-pill">Regressions</span>
+                <span class="skill-pill">Feature Eng.</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <div class="skill-group-label">eines</div>
+              <div class="skill-pills">
+                <span class="skill-pill">Python</span>
+                <span class="skill-pill">TensorFlow</span>
+                <span class="skill-pill">Jupyter</span>
+                <span class="skill-pill">Git</span>
+                <span class="skill-pill">LaTeX</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <div class="edu-item">
+            <div class="edu-degree">Grau en Matemàtiques</div>
+            <div class="edu-uni">Universitat de les Illes Balears (UIB)</div>
+            <div class="edu-period">2021 – 2025 (en curs)</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">TFG: Predicció financera amb LSTM</div>
+            <div class="edu-uni">Tutor: El teu tutor</div>
+            <div class="edu-period">2024 – 2025</div>
+          </div>
+
+          <div style="margin-top:3rem;">
+            <div class="skill-group-label">interessos de recerca</div>
+            <p style="font-style:italic; color:var(--ink2); font-size:0.95rem; line-height:1.8; margin-top:0.5rem;">
+              Processos estocàstics · Deep learning aplicat · Econometria ·
+              Optimització de carteres · Series temporals no estacionàries · Algorithmic trading
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTE -->
+  <section id="contacte">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-text reveal">
+          <h2>Parlem de<br><em>matemàtiques</em><br>i mercats.</h2>
+          <p>Obert a pràctiques, col·laboracions en recerca i projectes en quant finance o ML aplicat.</p>
+          <a href="mailto:mpratsmunar@gmail.com" class="btn btn-primary">mpratsmunar@gmail.com</a>
+        </div>
+        <div class="contact-links reveal">
+          <a href="https://github.com/brouprats" target="_blank" class="contact-link">
+            <span class="cl-name">GitHub</span>
+            <span class="cl-handle">@brouprats</span>
+            <span class="cl-arrow">→</span>
+          </a>
+          <a href="https://www.linkedin.com/in/mateu-prats-munar-112683235/" target="_blank" class="contact-link">
+            <span class="cl-name">LinkedIn</span>
+            <span class="cl-handle">Mateu Prats Munar</span>
+            <span class="cl-arrow">→</span>
+          </a>
+          <a href="#" class="contact-link">
+            <span class="cl-name">Google Scholar</span>
+            <span class="cl-handle">publicacions</span>
+            <span class="cl-arrow">→</span>
+          </a>
+          <a href="#" class="contact-link">
+            <span class="cl-name">Curriculum Vitae</span>
+            <span class="cl-handle">descarregar PDF</span>
+            <span class="cl-arrow">↓</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2025 Mateu Prats Munar</span>
+    <span>construït amb HTML · sense frameworks</span>
+    <span>// ultima_actualitzacio: 2025</span>
+  </footer>
+
+</main>
+<script>
+(function() {
+  const canvas = document.getElementById('heroChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const n = 60;
+  const real = [], pred = [];
+  let v = 182;
+  for (let i = 0; i < n; i++) {
+    v += (Math.random() - 0.48) * 3.5 + Math.sin(i * 0.18) * 1.2;
+    real.push(v);
+  }
+  for (let i = 0; i < n; i++) {
+    pred.push(real[i] + (Math.random() - 0.5) * 2.8);
+  }
+
+  function draw() {
+    const W = canvas.parentElement.clientWidth - 48;
+    const H = 180;
+    canvas.width = W; canvas.height = H;
+    const all = [...real, ...pred];
+    const minV = Math.min(...all) - 3, maxV = Math.max(...all) + 3;
+    const sx = i => (i / (n-1)) * (W-30) + 15;
+    const sy = v => H - 20 - ((v - minV) / (maxV - minV)) * (H - 35);
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = '#ccc9be'; ctx.lineWidth = 0.5;
+    for (let i = 0; i <= 4; i++) {
+      const y = 10 + i * (H-30)/4;
+      ctx.beginPath(); ctx.moveTo(15, y); ctx.lineTo(W-15, y); ctx.stroke();
+    }
+
+    ctx.beginPath(); ctx.strokeStyle = '#1a1a18'; ctx.lineWidth = 1.5;
+    real.forEach((v,i) => i===0 ? ctx.moveTo(sx(i),sy(v)) : ctx.lineTo(sx(i),sy(v)));
+    ctx.stroke();
+
+    ctx.beginPath(); ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 1.2; ctx.setLineDash([4,3]);
+    pred.forEach((v,i) => i===0 ? ctx.moveTo(sx(i),sy(v)) : ctx.lineTo(sx(i),sy(v)));
+    ctx.stroke(); ctx.setLineDash([]);
+
+    ctx.font = '10px JetBrains Mono, monospace';
+    ctx.fillStyle = '#1a1a18'; ctx.fillRect(W-120, H-16, 8, 8);
+    ctx.fillText('real', W-108, H-9);
+    ctx.fillStyle = '#c0392b'; ctx.fillRect(W-65, H-16, 8, 8);
+    ctx.fillText('pred', W-53, H-9);
+  }
+  draw();
+  window.addEventListener('resize', draw);
+})();
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
