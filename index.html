@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portfolio — El Teu Nom</title>
+  <title>Mateu Prats Munar — Mathematician & ML Researcher</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,300&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg: #f5f2eb;
-      --bg2: #ede9e0;
       --ink: #1a1a18;
       --ink2: #3d3d38;
       --muted: #8a8778;
@@ -47,31 +46,35 @@
 
     main { position: relative; z-index: 1; }
 
+    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(245,242,235,0.92);
+      background: rgba(245,242,235,0.93);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--rule);
       padding: 0.9rem 3rem;
       display: flex; justify-content: space-between; align-items: center;
     }
-    .nav-id {
-      font-family: var(--ff-mono);
-      font-size: 0.78rem;
-      color: var(--muted);
-      letter-spacing: 0.02em;
-    }
+    .nav-id { font-family: var(--ff-mono); font-size: 0.78rem; color: var(--muted); }
     .nav-id strong { color: var(--ink); font-weight: 600; }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-right { display: flex; align-items: center; gap: 2.5rem; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a {
-      font-family: var(--ff-mono);
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: color 0.2s;
+      font-family: var(--ff-mono); font-size: 0.72rem;
+      color: var(--muted); text-decoration: none;
+      letter-spacing: 0.05em; transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--blue); }
+
+    /* Lang toggle */
+    .lang-toggle {
+      font-family: var(--ff-mono); font-size: 0.7rem;
+      border: 1px solid var(--rule); background: transparent;
+      color: var(--muted); cursor: pointer;
+      padding: 0.25rem 0.7rem; letter-spacing: 0.08em;
+      transition: all 0.2s;
+    }
+    .lang-toggle:hover { border-color: var(--blue); color: var(--blue); }
 
     /* HERO */
     .hero {
@@ -86,78 +89,65 @@
     }
 
     .hero-label {
-      font-family: var(--ff-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.1s forwards;
+      font-family: var(--ff-mono); font-size: 0.7rem;
+      letter-spacing: 0.15em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 0.7s 0.1s forwards;
     }
     .hero-label::before { content: '// '; color: var(--green); }
 
     .hero h1 {
       font-family: var(--ff-serif);
       font-size: clamp(3rem, 5vw, 5rem);
-      font-weight: 400;
-      line-height: 1.05;
+      font-weight: 400; line-height: 1.05;
       margin-bottom: 0.5rem;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.25s forwards;
+      opacity: 0; animation: fadeUp 0.7s 0.25s forwards;
     }
 
     .hero-eq {
       font-family: var(--ff-mono);
-      font-size: clamp(0.82rem, 1.3vw, 1rem);
-      color: var(--blue);
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.4s forwards;
+      font-size: clamp(0.78rem, 1.2vw, 0.95rem);
+      color: var(--blue); margin-bottom: 2.5rem;
+      opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
     }
     .hero-eq .eq-comment { color: var(--muted); }
 
     .hero-desc {
-      color: var(--ink2);
-      font-size: 1.05rem;
-      max-width: 460px;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.55s forwards;
+      color: var(--ink2); font-size: 1.05rem;
+      max-width: 460px; margin-bottom: 3rem;
+      opacity: 0; animation: fadeUp 0.7s 0.55s forwards;
       font-style: italic;
     }
 
     .hero-cta {
       display: flex; gap: 1rem; flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.7s forwards;
+      opacity: 0; animation: fadeUp 0.7s 0.7s forwards;
     }
+
     .btn {
-      font-family: var(--ff-mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      padding: 0.65rem 1.6rem;
-      text-decoration: none;
-      border: 1px solid;
-      transition: all 0.2s;
-      display: inline-block;
+      font-family: var(--ff-mono); font-size: 0.72rem;
+      letter-spacing: 0.08em; padding: 0.65rem 1.6rem;
+      text-decoration: none; border: 1px solid;
+      transition: all 0.2s; display: inline-block; cursor: pointer;
     }
     .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
     .btn-primary:hover { background: var(--blue); border-color: var(--blue); }
     .btn-outline { background: transparent; color: var(--ink); border-color: var(--rule); }
     .btn-outline:hover { border-color: var(--ink); }
+    .btn-colab {
+      background: transparent; color: var(--red); border-color: var(--red);
+      font-size: 0.68rem; padding: 0.5rem 1.2rem;
+    }
+    .btn-colab:hover { background: var(--red); color: white; }
+    .btn-cv {
+      background: transparent; color: var(--green); border-color: var(--green);
+      font-size: 0.68rem; padding: 0.5rem 1.2rem;
+    }
+    .btn-cv:hover { background: var(--green); color: white; }
 
-    .hero-chart {
-      opacity: 0;
-      animation: fadeIn 1s 0.8s forwards;
-    }
-    .chart-label {
-      font-family: var(--ff-mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.08em;
-    }
+    /* Hero chart */
+    .hero-chart { opacity: 0; animation: fadeIn 1s 0.8s forwards; }
+    .chart-label { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--muted); margin-bottom: 0.5rem; }
     .chart-wrap {
       border: 1px solid var(--rule);
       background: rgba(255,255,255,0.5);
@@ -167,9 +157,7 @@
     .chart-meta {
       display: flex; justify-content: space-between;
       margin-top: 0.75rem;
-      font-family: var(--ff-mono);
-      font-size: 0.62rem;
-      color: var(--muted);
+      font-family: var(--ff-mono); font-size: 0.62rem; color: var(--muted);
     }
     .chart-meta .up { color: var(--green); }
 
@@ -177,84 +165,117 @@
     .container { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
     section { padding: 6rem 0; border-top: 1px solid var(--rule); }
 
-    .sec-header {
-      display: flex; align-items: baseline; gap: 1.2rem;
-      margin-bottom: 4rem;
-    }
+    .sec-header { display: flex; align-items: baseline; gap: 1.2rem; margin-bottom: 4rem; }
     .sec-num { font-family: var(--ff-mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; }
     .sec-title { font-family: var(--ff-serif); font-size: 2.2rem; font-weight: 400; }
 
-    /* PROJECT */
-    .project-block { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    /* PROJECTS GRID */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
 
-    .project-tag-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .project-card {
+      border: 1px solid var(--rule);
+      background: rgba(255,255,255,0.4);
+      padding: 2.5rem;
+      position: relative;
+      transition: background 0.3s;
+    }
+    .project-card:hover { background: rgba(255,255,255,0.7); }
+    .project-card::before {
+      content: '';
+      position: absolute; top: -1px; left: 2rem;
+      width: 50px; height: 3px;
+    }
+    .project-card.univar::before { background: var(--blue); }
+    .project-card.multivar::before { background: var(--green); }
+
+    .project-tag-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
     .ptag {
-      font-family: var(--ff-mono); font-size: 0.65rem; letter-spacing: 0.1em;
+      font-family: var(--ff-mono); font-size: 0.62rem; letter-spacing: 0.08em;
       padding: 0.2em 0.6em; border: 1px solid var(--rule); color: var(--muted); text-transform: uppercase;
     }
-    .ptag.hl { border-color: var(--blue); color: var(--blue); }
+    .ptag.hl-blue { border-color: var(--blue); color: var(--blue); }
+    .ptag.hl-green { border-color: var(--green); color: var(--green); }
 
-    .project-title { font-family: var(--ff-serif); font-size: 2rem; font-weight: 400; line-height: 1.2; margin-bottom: 1.2rem; }
-    .project-title em { font-style: italic; color: var(--blue); }
-    .project-desc { color: var(--ink2); margin-bottom: 2rem; }
+    .project-title { font-family: var(--ff-serif); font-size: 1.6rem; font-weight: 400; line-height: 1.2; margin-bottom: 1rem; }
+    .project-title em { font-style: italic; }
+    .project-title.blue em { color: var(--blue); }
+    .project-title.green em { color: var(--green); }
+
+    .project-desc { color: var(--ink2); margin-bottom: 1.5rem; font-size: 0.95rem; }
 
     .theorem-box {
       border-left: 3px solid var(--blue);
-      padding: 1rem 1.5rem;
+      padding: 0.8rem 1.2rem;
       background: rgba(26,74,122,0.04);
-      margin: 1.5rem 0;
+      margin: 1.2rem 0;
     }
-    .th-label { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--blue); letter-spacing: 0.1em; margin-bottom: 0.4rem; }
-    .theorem-box p { font-style: italic; font-size: 0.95rem; color: var(--ink2); }
+    .theorem-box.green { border-color: var(--green); background: rgba(26,107,69,0.04); }
+    .th-label { font-family: var(--ff-mono); font-size: 0.62rem; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+    .theorem-box .th-label { color: var(--blue); }
+    .theorem-box.green .th-label { color: var(--green); }
+    .theorem-box p { font-style: italic; font-size: 0.9rem; color: var(--ink2); }
 
-    .metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 2rem 0; }
-    .metric { background: var(--bg); padding: 1.2rem; text-align: center; }
-    .metric-val { font-family: var(--ff-mono); font-size: 1.5rem; color: var(--ink); font-weight: 600; }
-    .metric-val.pos { color: var(--green); }
-    .metric-lbl { font-family: var(--ff-mono); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.3rem; }
+    .metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 1.2rem 0; }
+    .metric { background: var(--bg); padding: 1rem; text-align: center; }
+    .metric-val { font-family: var(--ff-mono); font-size: 1.3rem; color: var(--ink); font-weight: 600; }
+    .metric-val.blue { color: var(--blue); }
+    .metric-val.green { color: var(--green); }
+    .metric-lbl { font-family: var(--ff-mono); font-size: 0.58rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.2rem; }
 
-    .arch-diagram { border: 1px solid var(--rule); background: rgba(255,255,255,0.5); padding: 2rem; }
-    .arch-title { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 1.5rem; text-transform: uppercase; }
-    .arch-layers { display: flex; flex-direction: column; gap: 0.6rem; }
-    .arch-box {
-      padding: 0.6rem 1rem; border: 1px solid;
-      font-family: var(--ff-mono); font-size: 0.7rem; letter-spacing: 0.05em; text-align: center;
+    .arch-mini {
+      border: 1px solid var(--rule);
+      background: rgba(255,255,255,0.4);
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
     }
-    .arch-box.input { border-color: var(--muted); color: var(--muted); }
-    .arch-box.lstm { border-color: var(--blue); color: var(--blue); background: rgba(26,74,122,0.05); }
-    .arch-box.lstm2 { border-color: var(--blue); color: var(--blue); background: rgba(26,74,122,0.03); }
-    .arch-box.dropout { border-color: var(--muted); color: var(--muted); font-style: italic; font-size: 0.65rem; }
-    .arch-box.dense { border-color: var(--green); color: var(--green); background: rgba(26,107,69,0.05); }
-    .arch-box.output { border-color: var(--red); color: var(--red); background: rgba(192,57,43,0.05); }
-    .arch-arrow { font-family: var(--ff-mono); font-size: 0.8rem; color: var(--rule); text-align: center; }
-    .arch-note { margin-top: 1rem; font-family: var(--ff-mono); font-size: 0.62rem; color: var(--muted); line-height: 1.6; }
-    .arch-note span { color: var(--blue); }
+    .arch-mini-title { font-family: var(--ff-mono); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 0.6rem; text-transform: uppercase; }
+    .arch-flow {
+      font-family: var(--ff-mono); font-size: 0.65rem;
+      color: var(--ink2); line-height: 2;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem;
+    }
+    .arch-node {
+      padding: 0.15em 0.5em; border: 1px solid;
+      white-space: nowrap;
+    }
+    .arch-node.blue { border-color: var(--blue); color: var(--blue); }
+    .arch-node.green { border-color: var(--green); color: var(--green); }
+    .arch-node.red { border-color: var(--red); color: var(--red); }
+    .arch-node.gray { border-color: var(--muted); color: var(--muted); }
+    .arch-sep { color: var(--muted); }
 
-    .stack-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 1.5rem; }
-    .stack-item { background: var(--bg); padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.7rem; }
-    .stack-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-    .stack-name { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--ink2); }
-    .stack-role { font-family: var(--ff-mono); font-size: 0.6rem; color: var(--muted); margin-left: auto; }
+    .project-cta { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1.5rem; }
 
     /* ABOUT */
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
-    .about-text p { color: var(--ink2); margin-bottom: 1.2rem; font-size: 1rem; }
-    .about-text p.lead { font-size: 1.2rem; font-style: italic; color: var(--ink); margin-bottom: 1.5rem; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; }
+    .about-text p { color: var(--ink2); margin-bottom: 1.2rem; font-size: 0.98rem; }
+    .about-text p.lead { font-size: 1.15rem; font-style: italic; color: var(--ink); margin-bottom: 1.5rem; }
 
-    .skill-group { margin-bottom: 1.5rem; }
-    .skill-group-label { font-family: var(--ff-mono); font-size: 0.65rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .skill-group { margin-bottom: 1.4rem; }
+    .skill-group-label { font-family: var(--ff-mono); font-size: 0.63rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.5rem; }
     .skill-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .skill-pill { font-family: var(--ff-mono); font-size: 0.68rem; padding: 0.25em 0.7em; border: 1px solid var(--rule); color: var(--ink2); }
+    .skill-pill { font-family: var(--ff-mono); font-size: 0.66rem; padding: 0.25em 0.6em; border: 1px solid var(--rule); color: var(--ink2); }
 
-    .edu-item { padding: 1.2rem 0; border-bottom: 1px solid var(--rule); }
-    .edu-degree { font-size: 1rem; font-weight: 600; }
-    .edu-uni { font-style: italic; color: var(--ink2); font-size: 0.95rem; }
-    .edu-period { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--muted); margin-top: 0.2rem; }
+    /* Experience timeline */
+    .exp-item { padding: 1rem 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: baseline; }
+    .exp-role { font-size: 0.95rem; font-weight: 600; }
+    .exp-company { font-size: 0.82rem; color: var(--blue); margin-top: 0.1rem; font-style: italic; }
+    .exp-period { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
+
+    .edu-item { padding: 1rem 0; border-bottom: 1px solid var(--rule); }
+    .edu-degree { font-size: 0.95rem; font-weight: 600; }
+    .edu-uni { font-style: italic; color: var(--ink2); font-size: 0.88rem; }
+    .edu-period { font-family: var(--ff-mono); font-size: 0.63rem; color: var(--muted); margin-top: 0.2rem; }
 
     /* CONTACT */
     .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
     .contact-text h2 { font-family: var(--ff-serif); font-size: 2.8rem; font-weight: 400; line-height: 1.15; margin-bottom: 1.2rem; }
     .contact-text p { color: var(--ink2); margin-bottom: 1.5rem; font-style: italic; }
+    .contact-btns { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1.5rem; }
 
     .contact-links { display: flex; flex-direction: column; }
     .contact-link {
@@ -265,7 +286,7 @@
     .contact-link:first-child { border-top: 1px solid var(--rule); }
     .contact-link:hover { color: var(--blue); padding-left: 0.5rem; }
     .cl-name { font-family: var(--ff-mono); font-size: 0.8rem; letter-spacing: 0.05em; }
-    .cl-handle { font-family: var(--ff-mono); font-size: 0.7rem; color: var(--muted); }
+    .cl-handle { font-family: var(--ff-mono); font-size: 0.68rem; color: var(--muted); }
     .cl-arrow { font-family: var(--ff-mono); font-size: 0.8rem; color: var(--rule); transition: color 0.2s; }
     .contact-link:hover .cl-arrow { color: var(--blue); }
 
@@ -277,6 +298,7 @@
       position: relative; z-index: 1;
     }
 
+    /* Animations */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
@@ -285,170 +307,236 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
-
-    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .reveal.visible { opacity: 1; transform: none; }
 
+    /* Responsive */
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 4rem; gap: 3rem; }
       .container { padding: 0 1.5rem; }
-      .project-block, .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .projects-grid, .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
       nav { padding: 0.9rem 1.5rem; }
       .nav-links { display: none; }
       footer { padding: 1.5rem; flex-direction: column; gap: 0.3rem; }
     }
+
+    /* Hidden lang */
+    [data-lang] { display: none; }
+    .lang-ca [data-lang="ca"] { display: block; }
+    .lang-ca [data-lang="ca"].inline { display: inline; }
+    .lang-en [data-lang="en"] { display: block; }
+    .lang-en [data-lang="en"].inline { display: inline; }
+    .lang-ca .nav-links a[data-nav-ca] { display: block; }
+    .lang-en .nav-links a[data-nav-en] { display: block; }
+
+    /* For inline spans inside already-visible elements */
+    span[data-lang] { display: none; }
+    .lang-ca span[data-lang="ca"] { display: inline; }
+    .lang-en span[data-lang="en"] { display: inline; }
   </style>
 </head>
-<body>
+<body class="lang-ca">
 <main>
 
+  <!-- NAV -->
   <nav>
     <div class="nav-id">
-      <strong>Mateu Prats Munar</strong> &nbsp;/&nbsp; mathematician · ml researcher
+      <strong>Mateu Prats Munar</strong> &nbsp;/&nbsp;
+      <span data-lang="ca">matemàtic · ml researcher</span>
+      <span data-lang="en">mathematician · ml researcher</span>
     </div>
-    <ul class="nav-links">
-      <li><a href="#projecte">projecte</a></li>
-      <li><a href="#sobre">sobre</a></li>
-      <li><a href="#contacte">contacte</a></li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#projectes"><span data-lang="ca">projectes</span><span data-lang="en">projects</span></a></li>
+        <li><a href="#sobre"><span data-lang="ca">sobre mi</span><span data-lang="en">about</span></a></li>
+        <li><a href="#contacte"><span data-lang="ca">contacte</span><span data-lang="en">contact</span></a></li>
+      </ul>
+      <button class="lang-toggle" id="langBtn">EN</button>
+    </div>
   </nav>
 
   <!-- HERO -->
   <div class="hero">
     <div class="hero-left">
-      <div class="hero-label">estudiant universitari · quant research</div>
-      <h1>Matemàtiques<br>aplicades als<br>mercats financers</h1>
+      <div class="hero-label">
+        <span data-lang="ca">estudiant UIB · quant research · Binissalem, Mallorca</span>
+        <span data-lang="en">UIB student · quant research · Binissalem, Mallorca</span>
+      </div>
+      <h1>
+        <span data-lang="ca">Matemàtiques<br>aplicades als<br>mercats financers</span>
+        <span data-lang="en">Mathematics<br>applied to<br>financial markets</span>
+      </h1>
       <div class="hero-eq">
         h<sub>t</sub> = o<sub>t</sub> ⊙ tanh(C<sub>t</sub>) &nbsp;&nbsp;<span class="eq-comment">// LSTM cell output</span>
       </div>
       <p class="hero-desc">
-        Combino anàlisi matemàtica i aprenentatge profund per modelar la dinàmica de sèries temporals financeres.
+        <span data-lang="ca">Combino anàlisi matemàtica i deep learning per modelar sèries temporals financeres. Especialitzat en xarxes LSTM per a predicció de preus borsaris.</span>
+        <span data-lang="en">I combine mathematical analysis and deep learning to model financial time series. Specialized in LSTM networks for stock price prediction.</span>
       </p>
       <div class="hero-cta">
-        <a href="#projecte" class="btn btn-primary">veure projecte →</a>
-        <a href="#contacte" class="btn btn-outline">contactar</a>
+        <a href="#projectes" class="btn btn-primary">
+          <span data-lang="ca">veure projectes →</span>
+          <span data-lang="en">view projects →</span>
+        </a>
+        <a href="#contacte" class="btn btn-outline">
+          <span data-lang="ca">contactar</span>
+          <span data-lang="en">contact</span>
+        </a>
       </div>
     </div>
     <div class="hero-chart">
-      <div class="chart-label">// stock_predictor.py — output visualitzat</div>
+      <div class="chart-label">// stock_predictor_multivariate.py</div>
       <div class="chart-wrap">
         <canvas id="heroChart" height="180"></canvas>
         <div class="chart-meta">
-          <span>AAPL · 60 dies</span>
-          <span class="up">RMSE: 0.031</span>
-          <span>LSTM × 2 capes</span>
+          <span>AAPL · 60 timesteps</span>
+          <span class="up">LSTM × 2 layers</span>
+          <span data-lang="ca">univar + multivar</span>
+          <span data-lang="en">univar + multivar</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- PROJECTE -->
-  <section id="projecte">
+  <!-- PROJECTES -->
+  <section id="projectes">
     <div class="container">
       <div class="sec-header reveal">
         <span class="sec-num">§01</span>
-        <h2 class="sec-title">Predicció d'accions amb LSTM</h2>
+        <h2 class="sec-title">
+          <span data-lang="ca">Projectes LSTM</span>
+          <span data-lang="en">LSTM Projects</span>
+        </h2>
       </div>
-      <div class="project-block">
-        <div class="project-left">
-          <div class="project-tag-row reveal">
-            <span class="ptag hl">Deep Learning</span>
-            <span class="ptag hl">Time Series</span>
+
+      <div class="projects-grid">
+
+        <!-- UNIVARIADA -->
+        <div class="project-card univar reveal">
+          <div class="project-tag-row">
+            <span class="ptag hl-blue">Univariate</span>
+            <span class="ptag hl-blue">LSTM</span>
+            <span class="ptag">Time Series</span>
             <span class="ptag">Python</span>
-            <span class="ptag">Quant Finance</span>
-            <span class="ptag">TFG</span>
           </div>
-          <h3 class="project-title reveal">
-            Xarxes <em>Long Short-Term Memory</em> per a la predicció de preus borsaris
+          <h3 class="project-title blue">
+            <span data-lang="ca">Predicció <em>Univariada</em> de Preus</span>
+            <span data-lang="en"><em>Univariate</em> Stock Price Prediction</span>
           </h3>
-          <p class="project-desc reveal">
-            Disseny i implementació d'un model de deep learning per predir el preu de tancament d'accions del mercat americà.
-            El model captura dependències temporals a llarg termini que models clàssics com ARIMA no poden representar adequadament.
+          <p class="project-desc">
+            <span data-lang="ca">Model LSTM que utilitza exclusivament el <strong>preu de tancament</strong> com a variable d'entrada. Captura la dinàmica temporal intrínseca de la sèrie sense informació addicional, servint com a línia base per comparar amb el model multivariant.</span>
+            <span data-lang="en">LSTM model using exclusively the <strong>closing price</strong> as input variable. Captures the intrinsic temporal dynamics of the series without additional information, serving as a baseline to compare with the multivariate model.</span>
           </p>
-
-          <div class="theorem-box reveal">
-            <div class="th-label">HIPÒTESI DE RECERCA</div>
-            <p>Les sèries temporals financeres contenen patrons de memòria a llarg termini que les LSTM
-            poden aprendre sense feature engineering manual exhaustiu.</p>
+          <div class="theorem-box">
+            <div class="th-label">
+              <span data-lang="ca">ENFOCAMENT</span>
+              <span data-lang="en">APPROACH</span>
+            </div>
+            <p>
+              <span data-lang="ca">Una única sèrie temporal com a input: el preu de tancament ajustat. El model aprèn patrons de memòria a llarg termini sense features externs.</span>
+              <span data-lang="en">A single time series as input: the adjusted closing price. The model learns long-term memory patterns without external features.</span>
+            </p>
           </div>
-
-          <div class="metric-row reveal">
+          <div class="metric-row">
             <div class="metric">
-              <div class="metric-val pos">0.031</div>
-              <div class="metric-lbl">RMSE</div>
+              <div class="metric-val blue">1</div>
+              <div class="metric-lbl">Input feature</div>
             </div>
             <div class="metric">
-              <div class="metric-val pos">94.2%</div>
-              <div class="metric-lbl">Dir. Accuracy</div>
-            </div>
-            <div class="metric">
-              <div class="metric-val">60d</div>
+              <div class="metric-val blue">60d</div>
               <div class="metric-lbl">Lookback</div>
             </div>
+            <div class="metric">
+              <div class="metric-val blue">t+1</div>
+              <div class="metric-lbl">Predicció</div>
+            </div>
           </div>
+          <div class="arch-mini">
+            <div class="arch-mini-title">// arquitectura</div>
+            <div class="arch-flow">
+              <span class="arch-node gray">Input (60,1)</span>
+              <span class="arch-sep">→</span>
+              <span class="arch-node blue">LSTM(128)</span>
+              <span class="arch-sep">→</span>
+              <span class="arch-node gray">Dropout</span>
+              <span class="arch-sep">→</span>
+              <span class="arch-node blue">LSTM(64)</span>
+              <span class="arch-sep">→</span>
+              <span class="arch-node gray">Dense(32)</span>
+              <span class="arch-sep">→</span>
+              <span class="arch-node red">Output(1)</span>
+            </div>
+          </div>
+          <div class="project-cta">
+            <a href="https://colab.research.google.com/drive/1XofopYGJZJm4Bn1qnq9sk5IQrb4NGrPd?usp=sharing" target="_blank" class="btn btn-colab">
+              ▶ <span data-lang="ca">Obrir a Colab</span><span data-lang="en">Open in Colab</span>
+            </a>
+          </div>
+        </div>
 
-          <p class="project-desc reveal" style="font-size:0.95rem;">
-            Les dades d'entrada inclouen preu de tancament, volum i indicadors tècnics (RSI, MACD, Bollinger Bands)
-            normalitzats amb MinMaxScaler. L'entrenament utilitza seqüències de 60 dies per predir t+1.
+        <!-- MULTIVARIADA -->
+        <div class="project-card multivar reveal">
+          <div class="project-tag-row">
+            <span class="ptag hl-green">Multivariate</span>
+            <span class="ptag hl-green">LSTM</span>
+            <span class="ptag">Feature Eng.</span>
+            <span class="ptag">Python</span>
+          </div>
+          <h3 class="project-title green">
+            <span data-lang="ca">Predicció <em>Multivariada</em> de Preus</span>
+            <span data-lang="en"><em>Multivariate</em> Stock Price Prediction</span>
+          </h3>
+          <p class="project-desc">
+            <span data-lang="ca">Extensió del model univariant que incorpora <strong>múltiples variables d'entrada</strong>: indicadors tècnics (RSI, MACD, Bollinger Bands), volum i dades de mercat. Permet al model contextualitzar el preu dins un entorn financer més ric.</span>
+            <span data-lang="en">Extension of the univariate model incorporating <strong>multiple input variables</strong>: technical indicators (RSI, MACD, Bollinger Bands), volume and market data. Allows the model to contextualize the price within a richer financial environment.</span>
           </p>
-
-          <div class="hero-cta reveal" style="margin-top:1.5rem;">
-            <a href="#" class="btn btn-primary">GitHub →</a>
-            <a href="#" class="btn btn-outline">Llegir memòria</a>
+          <div class="theorem-box green">
+            <div class="th-label">
+              <span data-lang="ca">HIPÒTESI</span>
+              <span data-lang="en">HYPOTHESIS</span>
+            </div>
+            <p>
+              <span data-lang="ca">Afegir indicadors tècnics com a features millora la capacitat predictiva respecte al model univariant, especialment en períodes d'alta volatilitat.</span>
+              <span data-lang="en">Adding technical indicators as features improves predictive capacity over the univariate model, especially during high-volatility periods.</span>
+            </p>
+          </div>
+          <div class="metric-row">
+            <div class="metric">
+              <div class="metric-val green">8+</div>
+              <div class="metric-lbl">Input features</div>
+            </div>
+            <div class="metric">
+              <div class="metric-val green">60d</div>
+              <div class="metric-lbl">Lookback</div>
+            </div>
+            <div class="metric">
+              <div class="metric-val green">t+1</div>
+              <div class="metric-lbl">Predicció</div>
+            </div>
+          </div>
+          <div class="arch-mini">
+            <div class="arch-mini-title">// arquitectura</div>
+            <div class="arch-flow">
+              <span class="arch-node gray">Input (60,8+)</span>
+              <span class="arch-sep">→</span>
+              <span class="arch-node green">LSTM(128)</span>
+              <span class="arch-sep">→</span>
+              <span class="arch-node gray">Dropout</span>
+              <span class="arch-sep">→</span>
+              <span class="arch-node green">LSTM(64)</span>
+              <span class="arch-sep">→</span>
+              <span class="arch-node gray">Dense(32)</span>
+              <span class="arch-sep">→</span>
+              <span class="arch-node red">Output(1)</span>
+            </div>
+          </div>
+          <div class="project-cta">
+            <a href="https://colab.research.google.com/drive/18tGOaOmsiJ2hWBY5av8Bzc47enPcysAq?usp=sharing" target="_blank" class="btn btn-colab">
+              ▶ <span data-lang="ca">Obrir a Colab</span><span data-lang="en">Open in Colab</span>
+            </a>
           </div>
         </div>
 
-        <div class="project-right reveal">
-          <div class="arch-diagram">
-            <div class="arch-title">// arquitectura del model</div>
-            <div class="arch-layers">
-              <div class="arch-box input">Input &nbsp;(60 timesteps × 8 features)</div>
-              <div class="arch-arrow">↓</div>
-              <div class="arch-box lstm">LSTM layer 1 &nbsp;(units=128, return_seq=True)</div>
-              <div class="arch-arrow">↓</div>
-              <div class="arch-box dropout">Dropout (0.2)</div>
-              <div class="arch-arrow">↓</div>
-              <div class="arch-box lstm2">LSTM layer 2 &nbsp;(units=64)</div>
-              <div class="arch-arrow">↓</div>
-              <div class="arch-box dropout">Dropout (0.2)</div>
-              <div class="arch-arrow">↓</div>
-              <div class="arch-box dense">Dense (32, relu)</div>
-              <div class="arch-arrow">↓</div>
-              <div class="arch-box output">Output (1) → preu_t+1</div>
-            </div>
-            <div class="arch-note">
-              optimizer: <span>Adam(lr=0.001)</span> · loss: <span>MSE</span><br>
-              epochs: <span>100</span> · batch_size: <span>32</span> · val_split: <span>0.15</span>
-            </div>
-          </div>
-
-          <div class="stack-grid">
-            <div class="stack-item">
-              <div class="stack-dot" style="background:#3b7dd8"></div>
-              <span class="stack-name">Python</span><span class="stack-role">core</span>
-            </div>
-            <div class="stack-item">
-              <div class="stack-dot" style="background:#e05c2a"></div>
-              <span class="stack-name">TensorFlow / Keras</span><span class="stack-role">model</span>
-            </div>
-            <div class="stack-item">
-              <div class="stack-dot" style="background:#4c9a52"></div>
-              <span class="stack-name">Pandas / NumPy</span><span class="stack-role">data</span>
-            </div>
-            <div class="stack-item">
-              <div class="stack-dot" style="background:#8c6fbd"></div>
-              <span class="stack-name">Matplotlib</span><span class="stack-role">viz</span>
-            </div>
-            <div class="stack-item">
-              <div class="stack-dot" style="background:#c09a30"></div>
-              <span class="stack-name">yfinance</span><span class="stack-role">dades</span>
-            </div>
-            <div class="stack-item">
-              <div class="stack-dot" style="background:#3b7dd8"></div>
-              <span class="stack-name">scikit-learn</span><span class="stack-role">preprocés</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -458,23 +546,33 @@
     <div class="container">
       <div class="sec-header reveal">
         <span class="sec-num">§02</span>
-        <h2 class="sec-title">Sobre mi</h2>
+        <h2 class="sec-title">
+          <span data-lang="ca">Sobre mi</span>
+          <span data-lang="en">About me</span>
+        </h2>
       </div>
       <div class="about-grid">
         <div class="about-text reveal">
-          <p class="lead">Soc estudiant de Matemàtiques, fascinat per la intersecció entre teoria formal i sistemes del món real.</p>
-          <p>El meu interès pels mercats financers no és especulatiu sinó matemàtic: les sèries temporals de preus borsaris són un banc de proves extraordinari per a mètodes d'aprenentatge automàtic, estocàstica i teoria de la informació.</p>
-          <p>Busco col·laborar amb equips que apliquen rigor quantitatiu per resoldre problemes de negoci, sigui en finance, tech o recerca.</p>
+          <p class="lead">
+            <span data-lang="ca">Estudiant de quart curs de Matemàtiques a la UIB, amb vocació per a la modelització financera i la programació aplicada.</span>
+            <span data-lang="en">Fourth-year Mathematics student at UIB, with a vocation for financial modelling and applied programming.</span>
+          </p>
+          <p>
+            <span data-lang="ca">Tinc interès en l'aplicació d'estadística, probabilitat i machine learning en escenaris reals. Busco especialitzar-me en la modelització financera i la direcció de projectes. Algunes de les meves aficions són l'excursionisme, la natació i la cuina.</span>
+            <span data-lang="en">I am interested in applying statistics, probability and machine learning to real-world scenarios. I aim to specialise in financial modelling and project management. My hobbies include hiking, swimming and cooking.</span>
+          </p>
 
           <div style="margin-top:2rem;">
             <div class="skill-group">
-              <div class="skill-group-label">matemàtiques</div>
+              <div class="skill-group-label">
+                <span data-lang="ca">matemàtiques</span><span data-lang="en">mathematics</span>
+              </div>
               <div class="skill-pills">
-                <span class="skill-pill">Anàlisi real</span>
                 <span class="skill-pill">Estadística</span>
                 <span class="skill-pill">Probabilitat</span>
-                <span class="skill-pill">Optimització</span>
                 <span class="skill-pill">Àlgebra lineal</span>
+                <span class="skill-pill">Optimització</span>
+                <span class="skill-pill">Anàlisi real</span>
               </div>
             </div>
             <div class="skill-group">
@@ -482,41 +580,133 @@
               <div class="skill-pills">
                 <span class="skill-pill">LSTM / RNN</span>
                 <span class="skill-pill">Time Series</span>
-                <span class="skill-pill">Regressions</span>
                 <span class="skill-pill">Feature Eng.</span>
+                <span class="skill-pill">Regressions</span>
               </div>
             </div>
             <div class="skill-group">
-              <div class="skill-group-label">eines</div>
+              <div class="skill-group-label">
+                <span data-lang="ca">eines</span><span data-lang="en">tools</span>
+              </div>
               <div class="skill-pills">
                 <span class="skill-pill">Python</span>
+                <span class="skill-pill">R-studio</span>
                 <span class="skill-pill">TensorFlow</span>
                 <span class="skill-pill">Jupyter</span>
                 <span class="skill-pill">Git</span>
                 <span class="skill-pill">LaTeX</span>
               </div>
             </div>
+            <div class="skill-group">
+              <div class="skill-group-label">
+                <span data-lang="ca">idiomes</span><span data-lang="en">languages</span>
+              </div>
+              <div class="skill-pills">
+                <span class="skill-pill">
+                  <span data-lang="ca">Català (nadiu)</span><span data-lang="en">Catalan (native)</span>
+                </span>
+                <span class="skill-pill">
+                  <span data-lang="ca">Castellà (nadiu)</span><span data-lang="en">Spanish (native)</span>
+                </span>
+                <span class="skill-pill">English (B2 Cambridge)</span>
+                <span class="skill-pill">
+                  <span data-lang="ca">Alemany (bàsic)</span><span data-lang="en">German (basic)</span>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="reveal">
-          <div class="edu-item">
-            <div class="edu-degree">Grau en Matemàtiques</div>
-            <div class="edu-uni">Universitat de les Illes Balears (UIB)</div>
-            <div class="edu-period">2021 – 2025 (en curs)</div>
-          </div>
-          <div class="edu-item">
-            <div class="edu-degree">TFG: Predicció financera amb LSTM</div>
-            <div class="edu-uni">Tutor: El teu tutor</div>
-            <div class="edu-period">2024 – 2025</div>
+          <!-- Experiència -->
+          <div class="skill-group-label" style="margin-bottom:1rem;">
+            <span data-lang="ca">experiència professional</span>
+            <span data-lang="en">professional experience</span>
           </div>
 
-          <div style="margin-top:3rem;">
-            <div class="skill-group-label">interessos de recerca</div>
-            <p style="font-style:italic; color:var(--ink2); font-size:0.95rem; line-height:1.8; margin-top:0.5rem;">
-              Processos estocàstics · Deep learning aplicat · Econometria ·
-              Optimització de carteres · Series temporals no estacionàries · Algorithmic trading
-            </p>
+          <div class="exp-item">
+            <div>
+              <div class="exp-role">
+                <span data-lang="ca">Pràctiques Metacercadors</span>
+                <span data-lang="en">Internship Metasearchers</span>
+              </div>
+              <div class="exp-company">Barceló Hotel Group</div>
+            </div>
+            <div class="exp-period">
+              <span data-lang="ca">Estiu 2025</span>
+              <span data-lang="en">Summer 2025</span>
+            </div>
+          </div>
+          <div class="exp-item">
+            <div>
+              <div class="exp-role">
+                <span data-lang="ca">Professor de repàs (Batxiller & ESO)</span>
+                <span data-lang="en">Private Tutor (Maths, Physics, Chemistry)</span>
+              </div>
+              <div class="exp-company">
+                <span data-lang="ca">Matemàtiques, Física, Química</span>
+                <span data-lang="en">Freelance</span>
+              </div>
+            </div>
+            <div class="exp-period">2025</div>
+          </div>
+          <div class="exp-item">
+            <div>
+              <div class="exp-role">
+                <span data-lang="ca">Venda de Tiquets</span>
+                <span data-lang="en">Staff</span>
+              </div>
+              <div class="exp-company">Mallorca Film Festival</div>
+            </div>
+            <div class="exp-period">
+              <span data-lang="ca">Estiu 2024</span>
+              <span data-lang="en">Summer 2024</span>
+            </div>
+          </div>
+          <div class="exp-item">
+            <div>
+              <div class="exp-role">
+                <span data-lang="ca">Coordinador de Vela</span>
+                <span data-lang="en">Sailing Coordinator</span>
+              </div>
+              <div class="exp-company">Club Malpàs-Bonaire</div>
+            </div>
+            <div class="exp-period">
+              <span data-lang="ca">Estiu 2022</span>
+              <span data-lang="en">Summer 2022</span>
+            </div>
+          </div>
+
+          <!-- Formació -->
+          <div class="skill-group-label" style="margin: 2.5rem 0 1rem;">
+            <span data-lang="ca">formació</span>
+            <span data-lang="en">education</span>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">
+              <span data-lang="ca">Grau en Matemàtiques</span>
+              <span data-lang="en">Bachelor's in Mathematics</span>
+            </div>
+            <div class="edu-uni">Universitat de les Illes Balears (UIB)</div>
+            <div class="edu-period">2021 – 2025</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">
+              <span data-lang="ca">Programa Explorer Santander</span>
+              <span data-lang="en">Santander Explorer Programme</span>
+            </div>
+            <div class="edu-uni">
+              <span data-lang="ca">Emprenedoria</span>
+              <span data-lang="en">Entrepreneurship</span>
+            </div>
+            <div class="edu-period">2022</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">
+              <span data-lang="ca">Participant Hackató Palma</span>
+              <span data-lang="en">Palma Hackathon Participant</span>
+            </div>
+            <div class="edu-period">2024</div>
           </div>
         </div>
       </div>
@@ -528,9 +718,21 @@
     <div class="container">
       <div class="contact-inner">
         <div class="contact-text reveal">
-          <h2>Parlem de<br><em>matemàtiques</em><br>i mercats.</h2>
-          <p>Obert a pràctiques, col·laboracions en recerca i projectes en quant finance o ML aplicat.</p>
-          <a href="mailto:mpratsmunar@gmail.com" class="btn btn-primary">mpratsmunar@gmail.com</a>
+          <h2>
+            <span data-lang="ca">Parlem de<br><em style="font-family:'EB Garamond',serif;">matemàtiques</em><br>i mercats.</span>
+            <span data-lang="en">Let's talk<br><em style="font-family:'EB Garamond',serif;">mathematics</em><br>and markets.</span>
+          </h2>
+          <p>
+            <span data-lang="ca">Obert a pràctiques, col·laboracions en recerca i projectes en quant finance o ML aplicat.</span>
+            <span data-lang="en">Open to internships, research collaborations and projects in quant finance or applied ML.</span>
+          </p>
+          <div class="contact-btns">
+            <a href="mailto:mpratsmunar@gmail.com" class="btn btn-primary">mpratsmunar@gmail.com</a>
+            <a href="MateuPratsMunar2026.pdf" download class="btn btn-cv">
+              ↓ <span data-lang="ca">Descarregar CV (CA · ES · EN)</span>
+              <span data-lang="en">Download CV (CA · ES · EN)</span>
+            </a>
+          </div>
         </div>
         <div class="contact-links reveal">
           <a href="https://github.com/brouprats" target="_blank" class="contact-link">
@@ -543,14 +745,19 @@
             <span class="cl-handle">Mateu Prats Munar</span>
             <span class="cl-arrow">→</span>
           </a>
-          <a href="#" class="contact-link">
-            <span class="cl-name">Google Scholar</span>
-            <span class="cl-handle">publicacions</span>
+          <a href="https://colab.research.google.com/drive/1XofopYGJZJm4Bn1qnq9sk5IQrb4NGrPd?usp=sharing" target="_blank" class="contact-link">
+            <span class="cl-name">Colab — <span data-lang="ca">Univariada</span><span data-lang="en">Univariate</span></span>
+            <span class="cl-handle">LSTM · <span data-lang="ca">preu de tancament</span><span data-lang="en">closing price</span></span>
             <span class="cl-arrow">→</span>
           </a>
-          <a href="#" class="contact-link">
+          <a href="https://colab.research.google.com/drive/18tGOaOmsiJ2hWBY5av8Bzc47enPcysAq?usp=sharing" target="_blank" class="contact-link">
+            <span class="cl-name">Colab — <span data-lang="ca">Multivariada</span><span data-lang="en">Multivariate</span></span>
+            <span class="cl-handle">LSTM · RSI · MACD · Bollinger</span>
+            <span class="cl-arrow">→</span>
+          </a>
+          <a href="MateuPratsMunar2026.pdf" download class="contact-link">
             <span class="cl-name">Curriculum Vitae</span>
-            <span class="cl-handle">descarregar PDF</span>
+            <span class="cl-handle">PDF · CA · ES · EN</span>
             <span class="cl-arrow">↓</span>
           </a>
         </div>
@@ -560,32 +767,45 @@
 
   <footer>
     <span>© 2025 Mateu Prats Munar</span>
-    <span>construït amb HTML · sense frameworks</span>
-    <span>// ultima_actualitzacio: 2025</span>
+    <span>Binissalem, Mallorca</span>
+    <span>// UIB · Matemàtiques</span>
   </footer>
 
 </main>
+
 <script>
+// Lang toggle
+const btn = document.getElementById('langBtn');
+btn.addEventListener('click', () => {
+  const isCA = document.body.classList.contains('lang-ca');
+  document.body.classList.toggle('lang-ca', !isCA);
+  document.body.classList.toggle('lang-en', isCA);
+  btn.textContent = isCA ? 'CA' : 'EN';
+  document.documentElement.lang = isCA ? 'en' : 'ca';
+});
+
+// Chart
 (function() {
   const canvas = document.getElementById('heroChart');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const n = 60;
-  const real = [], pred = [];
+  const real = [], predU = [], predM = [];
   let v = 182;
   for (let i = 0; i < n; i++) {
     v += (Math.random() - 0.48) * 3.5 + Math.sin(i * 0.18) * 1.2;
     real.push(v);
   }
   for (let i = 0; i < n; i++) {
-    pred.push(real[i] + (Math.random() - 0.5) * 2.8);
+    predU.push(real[i] + (Math.random() - 0.5) * 3.5);
+    predM.push(real[i] + (Math.random() - 0.5) * 2.2);
   }
 
   function draw() {
     const W = canvas.parentElement.clientWidth - 48;
     const H = 180;
     canvas.width = W; canvas.height = H;
-    const all = [...real, ...pred];
+    const all = [...real, ...predU, ...predM];
     const minV = Math.min(...all) - 3, maxV = Math.max(...all) + 3;
     const sx = i => (i / (n-1)) * (W-30) + 15;
     const sy = v => H - 20 - ((v - minV) / (maxV - minV)) * (H - 35);
@@ -596,25 +816,32 @@
       const y = 10 + i * (H-30)/4;
       ctx.beginPath(); ctx.moveTo(15, y); ctx.lineTo(W-15, y); ctx.stroke();
     }
-
+    // Real
     ctx.beginPath(); ctx.strokeStyle = '#1a1a18'; ctx.lineWidth = 1.5;
     real.forEach((v,i) => i===0 ? ctx.moveTo(sx(i),sy(v)) : ctx.lineTo(sx(i),sy(v)));
     ctx.stroke();
-
-    ctx.beginPath(); ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 1.2; ctx.setLineDash([4,3]);
-    pred.forEach((v,i) => i===0 ? ctx.moveTo(sx(i),sy(v)) : ctx.lineTo(sx(i),sy(v)));
+    // Univar
+    ctx.beginPath(); ctx.strokeStyle = '#1a4a7a'; ctx.lineWidth = 1.1; ctx.setLineDash([4,3]);
+    predU.forEach((v,i) => i===0 ? ctx.moveTo(sx(i),sy(v)) : ctx.lineTo(sx(i),sy(v)));
+    ctx.stroke(); ctx.setLineDash([]);
+    // Multivar
+    ctx.beginPath(); ctx.strokeStyle = '#1a6b45'; ctx.lineWidth = 1.1; ctx.setLineDash([2,2]);
+    predM.forEach((v,i) => i===0 ? ctx.moveTo(sx(i),sy(v)) : ctx.lineTo(sx(i),sy(v)));
     ctx.stroke(); ctx.setLineDash([]);
 
     ctx.font = '10px JetBrains Mono, monospace';
-    ctx.fillStyle = '#1a1a18'; ctx.fillRect(W-120, H-16, 8, 8);
-    ctx.fillText('real', W-108, H-9);
-    ctx.fillStyle = '#c0392b'; ctx.fillRect(W-65, H-16, 8, 8);
-    ctx.fillText('pred', W-53, H-9);
+    ctx.fillStyle = '#1a1a18'; ctx.fillRect(W-190, H-16, 8, 8);
+    ctx.fillText('real', W-178, H-9);
+    ctx.fillStyle = '#1a4a7a'; ctx.fillRect(W-140, H-16, 8, 8);
+    ctx.fillText('univar', W-128, H-9);
+    ctx.fillStyle = '#1a6b45'; ctx.fillRect(W-78, H-16, 8, 8);
+    ctx.fillText('multivar', W-66, H-9);
   }
   draw();
   window.addEventListener('resize', draw);
 })();
 
+// Scroll reveal
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.08 });
