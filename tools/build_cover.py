@@ -16,18 +16,22 @@ import sys
 CLIPS = [
     ('IMG_1058.MOV', 1.0, 0.45),   # Japan: lake reflecting the peaks
     ('IMG_1418.MOV', 1.6, 0.72),   # Japan: garden pond and stone lantern
+    ('IMG_0782.MOV', 2.0, 0.55),   # Japan: macaque in the grass
     ('IMG_4587.MOV', 3.6, 0.55),   # Japan: whale shark
     ('IMG_6367.MOV', 7.6, 0.50),   # China: mist over the forest
-    ('IMG_6369.MOV', 0.4, 0.70),   # China: temple eaves above the clouds
 ]
-# left out to keep the loop short: IMG_0782 (macaque), IMG_5932 (peaks), IMG_5540 (towers)
+# left out to keep the loop short: IMG_6369 (temple), IMG_5932 (peaks), IMG_5540 (towers)
 SHOT = 3.6    # seconds each shot is taken for, dissolves included
 X = 0.8       # dissolve length, seconds
 FPS = 25
-# name: (width, height, mp4 bitrate cap, webm target), bitrates in kbit/s
+# the edit is done once per orientation at the size of the camera files
+MASTERS = {'land': (3840, 2160), 'port': (1080, 1920)}
+# name: (master, output height, mp4 bitrate cap, webm target), bitrates in kbit/s
 OUTPUTS = {
-    'cover': (1920, 1080, 7000, 5000),
-    'cover-v': (1080, 1920, 4500, 3200),
+    'cover-2160': ('land', 2160, 18000, 12000),   # large and high-density screens
+    'cover-1440': ('land', 1440, 11000, 7500),
+    'cover': ('land', 1080, 7000, 5000),
+    'cover-v': ('port', 1920, 4500, 3200),        # phones held upright
 }
 
 src, out = sys.argv[1], sys.argv[2]
@@ -64,15 +68,21 @@ def master(name, w, h):
     return m
 
 
-for name, (w, h, mp4k, webmk) in OUTPUTS.items():
-    m = master(name, w, h)
-    run('ffmpeg', '-v', 'error', '-y', '-i', m, '-an', '-c:v', 'libx264', '-crf', '18',
-        '-maxrate', f'{mp4k}k', '-bufsize', f'{mp4k * 2}k', '-preset', 'veryslow', '-profile:v', 'high',
+masters = {k: master(k, w, h) for k, (w, h) in MASTERS.items()}
+for name, (mk, h, mp4k, webmk) in OUTPUTS.items():
+    m = masters[mk]
+    vf = ['-vf', f'scale=-2:{h}:flags=lanczos'] if h != MASTERS[mk][1] else []
+    run('ffmpeg', '-v', 'error', '-y', '-i', m, '-an', *vf, '-c:v', 'libx264', '-crf', '18',
+        '-maxrate', f'{mp4k}k', '-bufsize', f'{mp4k * 2}k', '-preset', 'slower', '-profile:v', 'high',
         '-pix_fmt', 'yuv420p', '-movflags', '+faststart', f'{out}/{name}.mp4')
     for n in ('1', '2'):
         dest = ['-f', 'null', '/dev/null'] if n == '1' else [f'{out}/{name}.webm']
-        run('ffmpeg', '-v', 'error', '-y', '-i', m, '-an', '-c:v', 'libvpx-vp9', '-b:v', f'{webmk}k',
-            '-row-mt', '1', '-cpu-used', '1', '-auto-alt-ref', '1', '-lag-in-frames', '25', '-pass', n, '-passlogfile', os.path.join(work, name), *dest)
-    run('ffmpeg', '-v', 'error', '-y', '-i', m, '-frames:v', '1', '-c:v', 'libwebp', '-quality', '90',
-        f'{out}/{name}-poster.webp')
-    print(name, 'done')
+        run('ffmpeg', '-v', 'error', '-y', '-i', m, '-an', *vf, '-c:v', 'libvpx-vp9', '-b:v', f'{webmk}k',
+            '-row-mt', '1', '-tile-columns', '2', '-cpu-used', '2', '-auto-alt-ref', '1', '-lag-in-frames', '25',
+            '-pass', n, '-passlogfile', os.path.join(work, name), *dest)
+    print(name, 'done', flush=True)
+# posters: the first frame, which is also where the loop starts
+run('ffmpeg', '-v', 'error', '-y', '-i', masters['land'], '-frames:v', '1', '-vf', 'scale=-2:1440:flags=lanczos',
+    '-c:v', 'libwebp', '-quality', '88', f'{out}/cover-poster.webp')
+run('ffmpeg', '-v', 'error', '-y', '-i', masters['port'], '-frames:v', '1', '-c:v', 'libwebp', '-quality', '88',
+    f'{out}/cover-v-poster.webp')

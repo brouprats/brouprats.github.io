@@ -70,7 +70,7 @@
   @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
   /* leaving through a door: a veil in the section's colour grows out of the door and fills the screen */
   .veil { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; pointer-events: none; }
-  .veil svg { width: min(28vw, 120px); height: auto; overflow: visible; }
+  .veil svg { position: fixed; left: 50vw; top: 50%; transform: translate(-50%, -50%); width: min(28vw, 120px); height: auto; overflow: visible; }
   .veil svg path { stroke-dasharray: 1; stroke-dashoffset: 1; }
   .veil-title { position: fixed; z-index: 21; margin: 0; font-size: clamp(30px, 2.8vw, 40px); font-weight: 500; letter-spacing: -.03em; line-height: .95; transform-origin: 0 0; pointer-events: none; white-space: nowrap; }
   /* coming back from a section */
