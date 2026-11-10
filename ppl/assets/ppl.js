@@ -67,7 +67,7 @@
   var cv = document.querySelector('.cover video');
   var conn = navigator.connection || {};
   if (cv && !reduced && !conn.saveData) {
-    var startCover = function () {
+    var playCover = function () {
       cv.addEventListener('playing', function () { cv.classList.add('on'); }, { once: true });
       cv.preload = 'auto';
       var p = cv.play();
@@ -78,6 +78,19 @@
         }).observe(cv);
       }
     };
+    /* The 4K file is large: hold the poster (its first frame) until the whole file is here, then play it from
+       memory so it never stalls. The entrance page starts this download early (see /index.html, same query).
+       Smaller files simply stream. */
+    var big = !matchMedia('(max-aspect-ratio: 4/5)').matches &&
+      matchMedia('(min-width: 2400px), (min-width: 1400px) and (min-resolution: 1.5dppx)').matches;
+    var whole = null;
+    if (big && window.fetch && window.URL && URL.createObjectURL) {
+      var file = 'assets/cover-2160.' + (cv.canPlayType('video/webm; codecs="vp9"') ? 'webm' : 'mp4');
+      whole = fetch(file).then(function (r) { if (!r.ok) throw 0; return r.blob(); })
+        .then(function (b) { cv.src = URL.createObjectURL(b); })
+        .catch(function () {});   /* on any failure fall back to streaming the <source> files */
+    }
+    var startCover = function () { if (whole) whole.then(playCover); else playCover(); };
     if (entering) afterEnter.push(startCover); else startCover();
   }
 
