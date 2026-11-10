@@ -34,6 +34,10 @@
     img.style.animation = 'none'; void img.offsetWidth; img.style.animation = '';
     cap.textContent = b.getAttribute('data-cap') || '';
     count.textContent = (i + 1) + ' / ' + buttons.length;
+    /* preload the neighbours so next/previous is instant */
+    [i + 1, i - 1].forEach(function (k) {
+      new Image().src = buttons[(k + buttons.length) % buttons.length].getAttribute('data-full');
+    });
   }
   function open(n) { last = document.activeElement; show(n); lb.hidden = false; document.body.style.overflow = 'hidden'; lb.querySelector('.close').focus(); }
   function close() { lb.hidden = true; document.body.style.overflow = ''; if (last) last.focus(); }
@@ -43,8 +47,16 @@
   lb.querySelector('.prev').addEventListener('click', function () { show(i - 1); });
   lb.querySelector('.nextb').addEventListener('click', function () { show(i + 1); });
   lb.querySelector('.stage').addEventListener('click', function (e) { if (e.target === e.currentTarget) close(); });
-  lb.addEventListener('keydown', function (e) {
+  /* on document so keys still work after a click on the photo moves focus to the page */
+  document.addEventListener('keydown', function (e) {
+    if (lb.hidden) return;
     if (e.key === 'Escape') close();
+    else if (e.key === 'Tab') {
+      /* keep focus inside the viewer: Close, Previous, Next */
+      var f = lb.querySelectorAll('button'), first = f[0], end = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !lb.contains(document.activeElement))) { e.preventDefault(); end.focus(); }
+      else if (!e.shiftKey && (document.activeElement === end || !lb.contains(document.activeElement))) { e.preventDefault(); first.focus(); }
+    }
     else if (e.key === 'ArrowRight') show(i + 1);
     else if (e.key === 'ArrowLeft') show(i - 1);
   });
