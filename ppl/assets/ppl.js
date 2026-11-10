@@ -86,27 +86,9 @@
     var whole = null;
     if (big && window.fetch && window.URL && URL.createObjectURL) {
       var file = 'assets/cover-2160.' + (cv.canPlayType('video/webm; codecs="vp9"') ? 'webm' : 'mp4');
-      var bar = document.createElement('span'); bar.className = 'cover-load';
-      cv.parentNode.appendChild(bar);
-      var endBar = function () { bar.style.transform = 'scaleX(1)'; bar.classList.add('done'); setTimeout(function () { bar.remove(); }, 900); };
-      whole = fetch(file).then(function (r) {
-        if (!r.ok) throw 0;
-        var total = +r.headers.get('content-length'), type = file.slice(-4) === 'webm' ? 'video/webm' : 'video/mp4';
-        if (!r.body || !r.body.getReader || !total) return r.blob();
-        /* read it in pieces so the line can follow the download */
-        var reader = r.body.getReader(), parts = [], got = 0;
-        var pump = function () {
-          return reader.read().then(function (x) {
-            if (x.done) return new Blob(parts, { type: type });
-            parts.push(x.value); got += x.value.length;
-            bar.style.transform = 'scaleX(' + Math.min(1, got / total) + ')';
-            return pump();
-          });
-        };
-        return pump();
-      }).then(function (b) { cv.src = URL.createObjectURL(b); })
-        .catch(function () {})   /* on any failure fall back to streaming the <source> files */
-        .then(endBar);
+      whole = fetch(file).then(function (r) { if (!r.ok) throw 0; return r.blob(); })
+        .then(function (b) { cv.src = URL.createObjectURL(b); })
+        .catch(function () {});   /* on any failure fall back to streaming the <source> files */
     }
     var startCover = function () { if (whole) whole.then(playCover); else playCover(); };
     if (entering) afterEnter.push(startCover); else startCover();
