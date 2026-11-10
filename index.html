@@ -170,7 +170,24 @@
       var a = document.querySelector(d[0]);
       a.addEventListener('click', function (e) { leave(a, d[1], e); });
       /* fetch the section early so the page is ready when the veil closes */
-      var warm = function () { var l = document.createElement('link'); l.rel = 'prefetch'; l.href = a.href; document.head.appendChild(l); };
+      var warm = function () {
+        var pre = function (href) {
+          var l = document.createElement('link');
+          if (l.relList && l.relList.supports && l.relList.supports('prefetch')) { l.rel = 'prefetch'; l.href = href; document.head.appendChild(l); }
+          else if (window.fetch) fetch(href).catch(function () {});
+        };
+        pre(a.href);
+        if (d[1] !== 'ppl') return;
+        /* also start on the cover video People PPL will play, picked with the same queries as its <source> list */
+        var c = navigator.connection || {};
+        if (c.saveData || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var q = function (m) { return matchMedia(m).matches; };
+        var name = q('(max-aspect-ratio: 4/5)') ? 'cover-v'
+          : q('(min-width: 2400px), (min-width: 1400px) and (min-resolution: 1.5dppx)') ? 'cover-2160'
+          : q('(min-width: 2000px), (min-width: 1000px) and (min-resolution: 1.5dppx)') ? 'cover-1440' : 'cover';
+        var webm = document.createElement('video').canPlayType('video/webm; codecs="vp9"');
+        pre('ppl/assets/' + name + (webm ? '.webm' : '.mp4'));
+      };
       ['pointerenter', 'touchstart', 'focus'].forEach(function (ev) { a.addEventListener(ev, warm, { once: true, passive: true }); });
     });
     /* back button restores this page from cache: clear whatever the last exit left on screen */
