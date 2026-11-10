@@ -25,27 +25,24 @@
       document.querySelectorAll('.enter-veil, .enter-mark').forEach(function (n) { n.remove(); });
       afterEnter.forEach(function (f) { f(); });
     };
-    if (!brand || !document.body.animate) done();
+    var veil = document.querySelector('.enter-veil'), mark = document.querySelector('.enter-mark');
+    if (!brand || !veil || !mark || !document.body.animate) done();
     else {
-      var veil = document.createElement('div'); veil.className = 'enter-veil';
-      /* inline copy of the mark: an <img> could show one empty frame while it decodes */
-      var box = document.createElement('div');
-      box.innerHTML = '<svg class="enter-mark" viewBox="0 0 590 591" fill="none" aria-hidden="true">' +
-        '<path d="M5 586H585V5H5V586Z" stroke-width="10" stroke="#25241F"/>' +
-        '<path d="M173.5 503.36V329.36M173.5 329.36V136.5H332C363.5 136.5 417.389 158.544 418.5 234.36C419.611 310.175 362.5 329.36 332 329.36H173.5Z" stroke-width="100" stroke="#25241F"/>' +
-        '<path d="M173.5 503.36V329.36M173.5 329.36V136.5H332C363.5 136.5 417.389 158.544 418.5 234.36C419.611 310.175 362.5 329.36 332 329.36H173.5Z" stroke-width="10" stroke="#F3F3F3"/></svg>';
-      var mark = box.firstChild;
-      document.body.appendChild(veil); document.body.appendChild(mark);
       root.classList.add('entering-live');
-      /* let the page settle for two frames, then move */
-      requestAnimationFrame(function () { requestAnimationFrame(function () {
-        var a = mark.getBoundingClientRect(), b = brand.getBoundingClientRect(), k = b.width / a.width;
+      var fly = function () {
+        var a = mark.getBoundingClientRect(), b = brand.getBoundingClientRect();
         var dx = (b.left + b.width / 2) - (a.left + a.width / 2), dy = (b.top + b.height / 2) - (a.top + a.height / 2);
         var ease = 'cubic-bezier(.65, 0, .2, 1)';
         veil.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-100%)' }], { duration: 950, delay: 60, easing: ease, fill: 'both' });
-        mark.animate([{ transform: 'translate(-50%, -50%)' }, { transform: 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) scale(' + k + ')' }], { duration: 950, easing: ease, fill: 'both' }).onfinish = done;
-      }); });
-      setTimeout(done, 2200);
+        mark.animate([{ transform: 'none' }, { transform: 'translate(' + dx + 'px, ' + dy + 'px) scale(' + (b.width / a.width) + ', ' + (b.height / a.height) + ')' }], { duration: 950, easing: ease, fill: 'both' }).onfinish = done;
+        setTimeout(done, 1600);
+      };
+      /* measure the masthead only once the fonts have settled it, then hold two frames so the first one is clean */
+      var go = function () { requestAnimationFrame(function () { requestAnimationFrame(fly); }); };
+      var fontsIn = document.fonts && document.fonts.ready, waited = false;
+      var once = function () { if (!waited) { waited = true; go(); } };
+      if (fontsIn) fontsIn.then(once);
+      setTimeout(once, fontsIn ? 400 : 0);
     }
   }
 

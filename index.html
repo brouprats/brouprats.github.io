@@ -70,8 +70,10 @@
   @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
   /* leaving through a door: a veil in the section's colour grows out of the door and fills the screen */
   .veil { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; pointer-events: none; }
-  .veil svg { position: fixed; left: 50vw; top: 50%; transform: translate(-50%, -50%); width: min(28vw, 120px); height: auto; overflow: visible; }
-  .veil svg path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  /* the stamped mark: this rule is repeated word for word in ppl/assets/ppl.css, keep them identical */
+  .stamp { position: fixed; left: 50vw; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; overflow: visible; pointer-events: none; }
+  @media (max-width: 480px) { .stamp { width: 96px; height: 96px; margin: -48px 0 0 -48px; } }
+  .stamp.drawing path { stroke-dasharray: 1; stroke-dashoffset: 1; }
   .veil-title { position: fixed; z-index: 21; margin: 0; font-size: clamp(30px, 2.8vw, 40px); font-weight: 500; letter-spacing: -.03em; line-height: .95; transform-origin: 0 0; pointer-events: none; white-space: nowrap; }
   /* coming back from a section */
   html.back .page { animation: fade .5s ease both; }
@@ -125,7 +127,7 @@
   /* door transitions: People PPL stamps its logo on paper, Academic inverts to its page colour */
   (function () {
     var EASE = 'cubic-bezier(.7, 0, .2, 1)';
-    var MARK = '<svg viewBox="0 0 590 591" fill="none" aria-hidden="true">' +
+    var MARK = '<svg class="stamp drawing" viewBox="0 0 590 591" preserveAspectRatio="none" fill="none" aria-hidden="true">' +
       '<path pathLength="1" d="M5 586H585V5H5V586Z" stroke-width="10" stroke="#25241F"/>' +
       '<path pathLength="1" d="M173.5 503.36V329.36M173.5 329.36V136.5H332C363.5 136.5 417.389 158.544 418.5 234.36C419.611 310.175 362.5 329.36 332 329.36H173.5Z" stroke-width="100" stroke="#25241F"/>' +
       '<path pathLength="1" d="M173.5 503.36V329.36M173.5 329.36V136.5H332C363.5 136.5 417.389 158.544 418.5 234.36C419.611 310.175 362.5 329.36 332 329.36H173.5Z" stroke-width="10" stroke="#F3F3F3"/></svg>';
@@ -146,7 +148,12 @@
         veil.animate([{ clipPath: inset(r), opacity: 0 }, { clipPath: inset(r), opacity: 1, offset: .18 }, { clipPath: 'inset(0px)', opacity: 1 }], { duration: 620, easing: EASE, fill: 'both' });
         var p = veil.querySelectorAll('path'), draw = function (el, d, t) { return el.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: t, delay: d, easing: 'cubic-bezier(.5, 0, .2, 1)', fill: 'both' }); };
         draw(p[0], 300, 480); draw(p[1], 520, 480);
-        draw(p[2], 640, 420).onfinish = function () { setTimeout(go, 80); };
+        draw(p[2], 640, 420).onfinish = function () {
+          /* drop the dash trick so the finished mark is a plain stroke, exactly as the next page draws it */
+          veil.querySelector('svg').classList.remove('drawing');
+          p.forEach(function (el) { el.getAnimations().forEach(function (an) { an.cancel(); }); });
+          setTimeout(go, 120);
+        };
       } else {
         var dark = matchMedia('(prefers-color-scheme: dark)').matches;
         var bg = dark ? '#0f0f0f' : '#ffffff', fg = dark ? '#f1f1ef' : '#111111';
