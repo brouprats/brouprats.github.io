@@ -8,6 +8,7 @@
   --rule: #25241f;
   --ff-sans: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
   --ff-serif: 'Bodoni Moda', 'Bodoni 72', Didot, Georgia, serif;
+  --serif-w: 700;
   --gut: max(16px, env(safe-area-inset-left, 0px));
   --gut-r: max(16px, env(safe-area-inset-right, 0px));
   --ease: cubic-bezier(.2, .7, .1, 1);
@@ -25,8 +26,8 @@ h1, h2 { font-weight: 600; text-wrap: balance; }
 .wrap { padding-left: var(--gut); padding-right: var(--gut-r); }
 @media (min-width: 900px) { .wrap { padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); } }
 .kicker { font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
-.serif { font-family: var(--ff-serif); font-weight: 400; }
-.it { font-family: var(--ff-serif); font-style: italic; font-weight: 400; }
+.serif { font-family: var(--ff-serif); font-weight: var(--serif-w); }
+.it { font-family: var(--ff-serif); font-style: italic; font-weight: var(--serif-w); }
 
 /* masthead */
 .mast { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding-block: 16px; border-bottom: 1px solid var(--rule); }
@@ -49,13 +50,13 @@ h1, h2 { font-weight: 600; text-wrap: balance; }
 .cover .over { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; color: #fff; padding-block: clamp(16px, 3vw, 36px); background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,0) 30%, rgba(0,0,0,0) 55%, rgba(0,0,0,.42)); }
 .cover .row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
 .cover h1 { font-size: clamp(84px, 17vw, 270px); line-height: .78; padding-bottom: .1em; letter-spacing: -.055em; animation: rise 1.2s var(--ease) .2s both; }
-.cover .dek { max-width: 300px; font-family: var(--ff-serif); font-size: clamp(19px, 1.8vw, 24px); line-height: 1.2; margin-bottom: 10px; animation: rise 1.2s var(--ease) .45s both; }
+.cover .dek { max-width: 300px; font-family: var(--ff-serif); font-weight: var(--serif-w); font-size: clamp(19px, 1.8vw, 24px); line-height: 1.2; margin-bottom: 10px; animation: rise 1.2s var(--ease) .45s both; }
 @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 
 /* editor's note */
 .note { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 20px; padding-block: clamp(56px, 8vw, 120px); border-bottom: 1px solid var(--rule); }
 .note .kicker { grid-column: span 3; }
-.note p { grid-column: span 9; font-family: var(--ff-serif); font-size: clamp(28px, 3.6vw, 52px); line-height: 1.08; letter-spacing: -.01em; }
+.note p { grid-column: span 9; font-family: var(--ff-serif); font-weight: var(--serif-w); font-size: clamp(28px, 3.6vw, 52px); line-height: 1.08; letter-spacing: -.01em; }
 @media (max-width: 760px) { .note .kicker, .note p { grid-column: 1 / -1; } }
 
 /* issues */
@@ -72,7 +73,7 @@ a.issue:hover .ph img { transform: scale(1.04); }
 .issue .meta { display: flex; justify-content: space-between; border-top: 1px solid var(--rule); padding-top: 10px; }
 .issue .t { font-size: 34px; font-weight: 500; letter-spacing: -.03em; line-height: 1; }
 a.issue:hover .t { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
-.issue .s { font-family: var(--ff-serif); font-style: italic; font-size: 19px; color: var(--ink-2); }
+.issue .s { font-family: var(--ff-serif); font-style: italic; font-weight: var(--serif-w); font-size: 15px; line-height: 1.35; color: var(--ink-2); max-width: 34ch; }
 .issue.soon .ph { display: grid; place-items: center; border: 1px dashed var(--muted); background: transparent; color: var(--muted); }
 .issue.soon .t { color: var(--muted); }
 
@@ -98,10 +99,10 @@ a.issue:hover .t { text-decoration: underline; text-underline-offset: 6px; text-
 .opener h1 { font-size: clamp(72px, 10vw, 160px); line-height: .82; letter-spacing: -.055em; }
 .opener .yr { display: flex; align-items: baseline; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
 .opener .yr b { font-size: clamp(30px, 3.6vw, 52px); font-weight: 300; letter-spacing: -.035em; line-height: 1; }
-.opener .yr span { font-family: var(--ff-serif); font-style: italic; font-size: 22px; color: var(--ink-2); }
+.opener .yr span { font-family: var(--ff-serif); font-style: italic; font-weight: var(--serif-w); font-size: 22px; color: var(--ink-2); }
 .opener .stand { max-width: 44ch; color: var(--ink-2); }
 .opener .credits { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--rule); padding-top: 12px; max-width: 44ch; }
-.opener .credits p { font-family: var(--ff-serif); font-style: italic; font-size: 20px; line-height: 1.3; }
+.opener .credits p { font-family: var(--ff-serif); font-style: italic; font-weight: var(--serif-w); font-size: 20px; line-height: 1.3; }
 .opener .ph { flex: 1 1 520px; min-width: 0; min-height: 70vh; position: relative; overflow: hidden; background: var(--paper-2); }
 .opener .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: settle 1.6s var(--ease) both; }
 @keyframes settle { from { transform: scale(1.08); opacity: .4; } to { transform: none; opacity: 1; } }
@@ -135,7 +136,7 @@ a.issue:hover .t { text-decoration: underline; text-underline-offset: 6px; text-
 .bleed .ph-fig figcaption { padding-left: var(--gut); padding-right: var(--gut-r); }
 
 .pull { padding-block: clamp(56px, 9vw, 140px); border-bottom: 1px solid var(--rule); display: flex; justify-content: center; }
-.pull blockquote { max-width: 980px; text-align: center; font-family: var(--ff-serif); font-size: clamp(34px, 5vw, 72px); line-height: 1.05; letter-spacing: -.015em; }
+.pull blockquote { max-width: 980px; text-align: center; font-family: var(--ff-serif); font-weight: var(--serif-w); font-size: clamp(34px, 5vw, 72px); line-height: 1.05; letter-spacing: -.015em; }
 
 .next { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; padding-block: clamp(40px, 6vw, 88px); text-decoration: none; border-top: 1px solid var(--rule); }
 .next .t { display: block; font-size: clamp(48px, 7vw, 112px); font-weight: 600; letter-spacing: -.05em; line-height: .9; margin-top: 10px; transition: transform .6s var(--ease); }
@@ -149,7 +150,7 @@ a.issue:hover .t { text-decoration: underline; text-underline-offset: 6px; text-
 .lb .stage { display: grid; place-items: center; padding: 0 56px; min-height: 0; }
 .lb .stage img { max-width: 100%; max-height: 100%; object-fit: contain; animation: lbin .35s var(--ease); }
 @keyframes lbin { from { opacity: 0; transform: scale(.985); } to { opacity: 1; transform: none; } }
-.lb .cap { min-height: 8px; padding: 12px 16px max(16px, env(safe-area-inset-bottom, 0px)); text-align: center; font-family: var(--ff-serif); font-style: italic; font-size: 18px; }
+.lb .cap { min-height: 8px; padding: 12px 16px max(16px, env(safe-area-inset-bottom, 0px)); text-align: center; font-family: var(--ff-serif); font-style: italic; font-weight: var(--serif-w); font-size: 18px; }
 .lb button { font: inherit; color: inherit; background: none; border: 1px solid rgba(240, 236, 225, .35); min-width: 44px; min-height: 44px; padding: 0 14px; cursor: pointer; }
 .lb button:hover { border-color: #f0ece1; }
 .lb .prev, .lb .nextb { position: absolute; top: 50%; transform: translateY(-50%); }
@@ -162,12 +163,17 @@ a.issue:hover .t { text-decoration: underline; text-underline-offset: 6px; text-
 .rv-in { opacity: 1; transform: none; transition: opacity 1s var(--ease), transform 1s var(--ease); }
 
 /* arriving from the entrance: paper with the mark stamped in the centre, exactly where the entrance left it.
-   Drawn with pseudo-elements so it is there on first paint; ppl.js then flies the mark to the masthead. */
-html.entering:not(.entering-live) body::before { content: ''; position: fixed; inset: 0; z-index: 90; background: var(--paper); }
-html.entering:not(.entering-live) body::after { content: ''; position: fixed; left: 50vw; top: 50%; z-index: 91; width: min(28vw, 120px); aspect-ratio: 590 / 591; transform: translate(-50%, -50%); background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTkwIiBoZWlnaHQ9IjU5MSIgdmlld0JveD0iMCAwIDU5MCA1OTEiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTUgNTg2SDU4NVY1SDVWNTg2WiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlPSIjMjUyNDFGIi8+PHBhdGggZD0iTTE3My41IDUwMy4zNlYzMjkuMzZNMTczLjUgMzI5LjM2VjEzNi41SDMzMkMzNjMuNSAxMzYuNSA0MTcuMzg5IDE1OC41NDQgNDE4LjUgMjM0LjM2QzQxOS42MTEgMzEwLjE3NSAzNjIuNSAzMjkuMzYgMzMyIDMyOS4zNkgxNzMuNVoiIHN0cm9rZS13aWR0aD0iMTAwIiBzdHJva2U9IiMyNTI0MUYiLz48cGF0aCBkPSJNMTczLjUgNTAzLjM2VjMyOS4zNk0xNzMuNSAzMjkuMzZWMTM2LjVIMzMyQzM2My41IDEzNi41IDQxNy4zODkgMTU4LjU0NCA0MTguNSAyMzQuMzZDNDE5LjYxMSAzMTAuMTc1IDM2Mi41IDMyOS4zNiAzMzIgMzI5LjM2SDE3My41WiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlPSIjRjNGM0YzIi8+PC9zdmc+") center / contain no-repeat; }
+   Both elements are in the HTML, so they are there on first paint; ppl.js slides the paper away and moves
+   the mark to the masthead. If the script never runs, they clear themselves after three seconds. */
+.enter-veil, .enter-mark { display: none; }
+html.entering .enter-veil { display: block; position: fixed; inset: 0 0 -2px; z-index: 90; background: var(--paper); pointer-events: none; will-change: transform; animation: enter-gone .01s linear 3s forwards; }
+html.entering .enter-mark { display: block; z-index: 91; transform-origin: 50% 50%; will-change: transform; animation: enter-gone .01s linear 3s forwards; }
+html.entering-live .enter-veil, html.entering-live .enter-mark { animation: none; }
 html.entering .mast .brand img { visibility: hidden; }
-.enter-veil { position: fixed; inset: 0 0 -2px; z-index: 90; background: var(--paper); pointer-events: none; will-change: transform; }
-.enter-mark { position: fixed; left: 50vw; top: 50%; z-index: 91; width: min(28vw, 120px); height: auto; overflow: visible; transform: translate(-50%, -50%); pointer-events: none; will-change: transform; }
+@keyframes enter-gone { to { visibility: hidden; } }
+/* the stamped mark: this rule is repeated word for word in /index.html, keep them identical */
+.stamp { position: fixed; left: 50vw; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; overflow: visible; pointer-events: none; }
+@media (max-width: 480px) { .stamp { width: 96px; height: 96px; margin: -48px 0 0 -48px; } }
 
 ::view-transition-old(root) { animation: vt-out .35s var(--ease) both; }
 ::view-transition-new(root) { animation: vt-in .6s var(--ease) .1s both; }

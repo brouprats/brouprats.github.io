@@ -62,7 +62,8 @@ def master(name, w, h):
         f.append(f'[{cur}][v{i}]xfade=transition=fade:duration={X}:offset={t - X:.3f}[x{i}]')
         cur, t = f'x{i}', t + seq[i][3] - X
     # the closing dissolve already shows the first X seconds, so the loop starts after them
-    f.append(f'[{cur}]trim=start={X},setpts=PTS-STARTPTS[o]')
+    # xfade hands back 4:4:4; return to 4:2:0, which is what browsers decode in hardware
+    f.append(f'[{cur}]trim=start={X},setpts=PTS-STARTPTS,format=yuv420p[o]')
     run('ffmpeg', '-v', 'error', '-y', *ins, '-filter_complex', ';'.join(f), '-map', '[o]', '-an',
         '-c:v', 'libx264', '-crf', '12', '-preset', 'fast', m)
     return m
@@ -77,7 +78,7 @@ for name, (mk, h, mp4k, webmk) in OUTPUTS.items():
         '-pix_fmt', 'yuv420p', '-movflags', '+faststart', f'{out}/{name}.mp4')
     for n in ('1', '2'):
         dest = ['-f', 'null', '/dev/null'] if n == '1' else [f'{out}/{name}.webm']
-        run('ffmpeg', '-v', 'error', '-y', '-i', m, '-an', *vf, '-c:v', 'libvpx-vp9', '-b:v', f'{webmk}k',
+        run('ffmpeg', '-v', 'error', '-y', '-i', m, '-an', *vf, '-c:v', 'libvpx-vp9', '-pix_fmt', 'yuv420p', '-b:v', f'{webmk}k',
             '-row-mt', '1', '-tile-columns', '2', '-cpu-used', '2', '-auto-alt-ref', '1', '-lag-in-frames', '25',
             '-pass', n, '-passlogfile', os.path.join(work, name), *dest)
     print(name, 'done', flush=True)
