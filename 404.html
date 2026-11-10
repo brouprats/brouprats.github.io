@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Page not found · Mateu Prats Munar</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+<style>
+  /* Same black field as the entrance. GitHub Pages serves this file at any missing path, so every URL is absolute. */
+  :root { --bg: #000; --fg: #fff; --muted: #8a8a8a; --dim: #5f5f5f; --line: #3a3a3a; --light: #ecebe6; --accent: #ff4b33; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .page {
+    min-height: 100%; display: flex; flex-direction: column; justify-content: space-between; gap: 40px;
+    padding-block: max(24px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-bottom, 0px));
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  @media (min-width: 900px) { .page { padding-left: max(48px, env(safe-area-inset-left, 0px)); padding-right: max(48px, env(safe-area-inset-right, 0px)); } }
+  .bar { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; letter-spacing: .02em; color: var(--muted); }
+  .bar a { color: var(--muted); text-decoration: none; }
+  .bar a:hover { color: var(--fg); }
+  main { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px; }
+  h1 { margin: 0; font-weight: 500; font-size: clamp(96px, 22vw, 280px); line-height: .8; letter-spacing: -.06em; }
+  h1 span { color: var(--accent); }
+  p { margin: 0; font-size: 16px; color: var(--muted); max-width: 36ch; }
+  .path { font-size: 13px; color: var(--dim); word-break: break-all; max-width: 60ch; }
+  .doors { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 8px; }
+  .doors a {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 20px;
+    border: 1px solid var(--line); color: var(--fg); text-decoration: none; font-size: 15px;
+    transition: background-color .25s, color .25s, border-color .25s;
+  }
+  .doors a:hover, .doors a:focus-visible { background: var(--light); color: #000; border-color: var(--light); }
+  a:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+  @media (prefers-reduced-motion: reduce) { .doors a { transition: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="bar"><a href="/">Mateu Prats Munar</a><span>Error 404</span></div>
+
+  <main>
+    <h1>404<span>.</span></h1>
+    <p>This page does not exist, or it has moved.</p>
+    <p class="path" id="path"></p>
+    <nav class="doors" aria-label="Go to">
+      <a href="/">Entrance</a>
+      <a href="/academic/">Academic</a>
+      <a href="/ppl/">People PPL</a>
+    </nav>
+  </main>
+
+  <div class="bar"><span>© 2026</span><span>brouprats.github.io</span></div>
+</div>
+<script>
+  try { document.getElementById('path').textContent = decodeURIComponent(location.pathname); } catch (e) {}
+</script>
+</body>
+</html>
