@@ -18,7 +18,16 @@
     <nav aria-label="People PPL"><a href="#issues">Issues</a><a href="#about">About</a><a class="quiet" href="../">← Entrance</a></nav>
   </header>
   <section class="cover bleed" aria-label="Cover">
-    <img src="photos/japan/IMG_1090.webp" srcset="photos/japan/IMG_1090-sm.webp 900w, photos/japan/IMG_1090.webp 2400w" sizes="100vw" width="2400" height="1350" alt="Clear mountain lake under green peaks, Japan" fetchpriority="high">
+    <picture>
+      <source media="(max-aspect-ratio: 4/5)" srcset="assets/cover-v-poster.webp" width="1080" height="1920">
+      <img src="assets/cover-poster.webp" width="1920" height="1080" alt="Stone lantern on a small island in a garden pond, Kanazawa, Japan" fetchpriority="high">
+    </picture>
+    <video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
+      <source media="(max-aspect-ratio: 4/5)" src="assets/cover-v.webm" type="video/webm">
+      <source media="(max-aspect-ratio: 4/5)" src="assets/cover-v.mp4" type="video/mp4">
+      <source src="assets/cover.webm" type="video/webm">
+      <source src="assets/cover.mp4" type="video/mp4">
+    </video>
     <div class="over wrap">
       <div class="row kicker"><span>No. 01 — 02</span><span>Iceland · Japan</span></div>
       <div class="row"><h1>People</h1><p class="dek">A visual journal, one country per issue.</p></div>
@@ -31,7 +40,7 @@
   </section>
 
   <section id="issues" class="issues">
-    <div class="sec-head"><h2>Issues</h2><span class="kicker">03 issues</span></div>
+    <div class="sec-head"><h2>Issues</h2><span class="kicker">02 published · 01 in preparation</span></div>
     <div class="issue-grid">
       <a class="issue rv" href="iceland.html">
         <div class="ph"><img src="photos/iceland/IMG_0322-sm.webp" width="900" height="675" alt="Road through green hills with a farmhouse, Iceland" loading="lazy"></div>
@@ -54,13 +63,18 @@
     </div>
   </section>
 
-  <section class="toc">
-    <span class="kicker">Contents</span>
-    <ol>
-      <li><a href="iceland.html"><span class="n">01</span><span>Iceland</span><span class="it">2024</span></a></li>
-      <li><a href="japan.html"><span class="n">02</span><span>Japan</span><span class="it">2025</span></a></li>
-      <li><span><span class="n">03</span><span>China</span><span class="it">soon</span></span></li>
-    </ol>
+  <section class="frames" aria-labelledby="frames-h">
+    <div class="sec-head"><h2 id="frames-h">Frames</h2><span class="kicker">From both issues</span></div>
+    <div class="strip bleed" tabindex="0" role="group" aria-label="Selected photographs, scroll sideways">
+      <a href="iceland.html" style="--r: 1.3333"><img src="photos/iceland/IMG_0374-sm.webp" width="900" height="675" alt="Canyon walls and a narrow river" loading="lazy" decoding="async"><span class="kicker"><span>01</span><span>Iceland</span></span></a>
+      <a href="japan.html" style="--r: 0.7500"><img src="photos/japan/IMG_1573-sm.webp" width="675" height="900" alt="Bamboo grove, looking up" loading="lazy" decoding="async"><span class="kicker"><span>02</span><span>Japan</span></span></a>
+      <a href="iceland.html" style="--r: 1.3333"><img src="photos/iceland/IMG_0873-sm.webp" width="900" height="675" alt="Waterfalls falling into a basalt canyon" loading="lazy" decoding="async"><span class="kicker"><span>03</span><span>Iceland</span></span></a>
+      <a href="japan.html" style="--r: 0.7500"><img src="photos/japan/IMG_1130-sm.webp" width="675" height="900" alt="Turquoise river, grey stones" loading="lazy" decoding="async"><span class="kicker"><span>04</span><span>Japan</span></span></a>
+      <a href="iceland.html" style="--r: 1.3333"><img src="photos/iceland/IMG_1024-sm.webp" width="900" height="675" alt="Sunset over the sea and black rocks" loading="lazy" decoding="async"><span class="kicker"><span>05</span><span>Iceland</span></span></a>
+      <a href="japan.html" style="--r: 1.7787"><img src="photos/japan/IMG_1351-sm.webp" width="900" height="506" alt="Thatched house and its garden" loading="lazy" decoding="async"><span class="kicker"><span>06</span><span>Japan</span></span></a>
+      <a href="iceland.html" style="--r: 1.3333"><img src="photos/iceland/IMG_0677-sm.webp" width="900" height="675" alt="Cliffs above a dark pool, two people on the rocks" loading="lazy" decoding="async"><span class="kicker"><span>07</span><span>Iceland</span></span></a>
+      <a href="japan.html" style="--r: 0.7500"><img src="photos/japan/IMG_1767-sm.webp" width="675" height="900" alt="Sunset over the sea" loading="lazy" decoding="async"><span class="kicker"><span>08</span><span>Japan</span></span></a>
+    </div>
   </section>
   <footer class="foot">
     <span class="big">PPL</span>

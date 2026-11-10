@@ -13,6 +13,21 @@
     });
   }
 
+  /* cover loop: only with motion allowed and no data saver; the poster stays otherwise */
+  var cv = document.querySelector('.cover video');
+  var conn = navigator.connection || {};
+  if (cv && !reduced && !conn.saveData) {
+    cv.addEventListener('playing', function () { cv.classList.add('on'); }, { once: true });
+    cv.preload = 'auto';
+    var p = cv.play();
+    if (p && p.catch) p.catch(function () {});
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        if (es[0].isIntersecting) { var q = cv.play(); if (q && q.catch) q.catch(function () {}); } else cv.pause();
+      }).observe(cv);
+    }
+  }
+
   /* lightbox for every photo on the page */
   var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-full]'));
   if (!buttons.length) return;
