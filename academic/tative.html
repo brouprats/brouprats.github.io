@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tative · Mateu Prats Munar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <a class="name" href="index.html">Mateu Prats Munar<span class="dot">.</span></a>
+    <span class="role">M.Sc. Mathematics, TUM</span>
+    <nav aria-label="Project"><a href="index.html#work">Index</a><a href="thesis.html">Next →</a></nav>
+  </header>
+
+  <main>
+    <section class="p-head grid">
+      <span class="p-num num">01</span>
+      <h1 class="p-title" style="view-transition-name: t-tative">Tative</h1>
+      <dl class="p-meta">
+        <div><dt>Year</dt><dd>2026—, ongoing</dd></div>
+        <div><dt>Role</dt><dd>Solo: research, engine, interface</dd></div>
+        <div><dt>Stack</dt><dd>Python, React, Tauri</dd></div>
+        <div><dt>Code</dt><dd>Private · interface in Spanish</dd></div>
+      </dl>
+    </section>
+
+    <section class="statement grid">
+      <p>A desktop lab that takes a trading idea from point-in-time market data to a reproducible backtest, a portfolio optimisation and, if it survives, paper orders on Alpaca.</p>
+    </section>
+
+    <figure class="hero reveal-clip">
+      <img src="assets/img/tative-lab.webp" width="1600" height="1000" alt="Tative laboratory screen showing a KO and PEP pairs run with its model, data version, parameters, equity curve and drawdown">
+    </figure>
+
+    <section class="sec grid rv">
+      <h2>Context</h2>
+      <div class="body">
+        <p class="lead">Research notebooks change under your feet: data gets revised, code gets edited, parameters get forgotten. In Tative the unit of work is the experiment.</p>
+        <p class="txt">Every run is stored as an exact triple of model version, data version and parameters, so any result can be regenerated, compared against a naive baseline and, only then, pushed to paper trading through hard risk controls.</p>
+        <div class="facts">
+          <div><b>2,250</b><span>Python tests, all passing</span></div>
+          <div><b>547</b><span>front-end tests</span></div>
+          <div><b>105</b><span>versioned models</span></div>
+          <div><b>30k</b><span>lines of Python</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec grid rv">
+      <h2>How it works</h2>
+      <div class="body">
+        <ol class="flow">
+          <li><span>Yahoo · FRED · ECB · Alpaca</span></li>
+          <li><span>Validation</span></li>
+          <li class="k"><span>Point-in-time data lake</span></li>
+          <li><span>Versioned models</span></li>
+          <li class="k"><span>Backtest · optimiser</span></li>
+          <li><span>Risk guards</span></li>
+          <li><span>Paper orders</span></li>
+          <li><span>Paper vs backtest tracking</span></li>
+        </ol>
+        <p class="txt">The numeric core is a library of pure, versioned functions with no I/O: 72 factor models (including 33 of the 101 Formulaic Alphas and 34 of GTJA-191), rule strategies, a walk-forward backtester, a long-only optimiser, volatility and options models. An architecture test stops layers from importing each other the wrong way.</p>
+      </div>
+    </section>
+
+    <section class="sec grid rv">
+      <h2>Engineering decisions</h2>
+      <div class="body pairs">
+        <div><h3>No look-ahead</h3><p>Every signal at day t uses a window ending at t, and rules execute one session later, as in paper trading. Whole-sample diagnostics are labelled in-sample and never feed decisions.</p></div>
+        <div><h3>Costs are explicit</h3><p>A proportional cost is charged on turnover, and headline numbers are always shown next to a cost-sensitivity row. Slippage is measured in paper trading, not simulated.</p></div>
+        <div><h3>Against overfitting</h3><p>Temporal splits only, walk-forward re-estimation, and parameter sweeps that select in-sample and then test on a held-out tail, with a check for plateaus versus isolated peaks.</p></div>
+        <div><h3>Data is never silently fixed</h3><p>Bars that fail validation are rejected with a reason and kept in the raw layer. Calendar gaps are reported, never imputed, and survivorship is guarded.</p></div>
+      </div>
+    </section>
+
+    <section class="sec grid rv">
+      <h2>Results</h2>
+      <div class="body">
+        <figure class="chart">
+          <div class="chart-head"><span>Coca-Cola vs PepsiCo pairs rule, 2005—2024</span><span class="legend"><span><i></i>Pairs rule</span><span><i class="b"></i>Buy &amp; hold 50/50</span></span></div>
+          <div class="chart-box" data-chart="assets/data/ko_pep.json"></div>
+          <figcaption>Growth of 1 and drawdown, daily adjusted closes from Yahoo Finance, default parameters, no tuning. Hover to read values.</figcaption>
+        </figure>
+        <div class="tbl-wrap">
+          <table class="m">
+            <thead><tr><th>Series</th><th>CAGR</th><th>Volatility</th><th>Sharpe</th><th>Max drawdown</th><th>Trades</th></tr></thead>
+            <tbody>
+              <tr class="hl"><td>Pairs rule, no cost</td><td>10.2%</td><td>17.3%</td><td>0.65</td><td>35.7%</td><td>255</td></tr>
+              <tr><td>Pairs rule, 5 bp cost</td><td>9.5%</td><td>17.3%</td><td>0.61</td><td>35.8%</td><td>255</td></tr>
+              <tr><td>Buy and hold 50/50</td><td>8.7%</td><td>16.7%</td><td>0.58</td><td>40.4%</td><td>1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="txt">Read with care. The rule is long-only and almost fully invested, so it tilts a 50/50 book rather than running a market-neutral pair. Most of the edge comes from the first decade, the pair is not significantly cointegrated in-sample (p = 0.32) and its half-life is about 246 sessions.</p>
+
+        <figure class="chart" style="margin-top: 24px;">
+          <div class="chart-head"><span>Walk-forward minimum variance, SPY · EFA · TLT · IEF · GLD, 2007—2024</span><span class="legend"><span><i></i>Min variance</span><span><i class="b"></i>Equal weight</span></span></div>
+          <div class="chart-box" data-chart="assets/data/min_var.json"></div>
+          <figcaption>Weights re-estimated every 21 sessions from the previous 60 returns, 5 bp cost on turnover for both.</figcaption>
+        </figure>
+        <div class="tbl-wrap">
+          <table class="m">
+            <thead><tr><th>Series</th><th>CAGR</th><th>Volatility</th><th>Sharpe</th><th>Max drawdown</th></tr></thead>
+            <tbody>
+              <tr class="hl"><td>Walk-forward min variance</td><td>4.5%</td><td>5.7%</td><td>0.79</td><td>20.0%</td></tr>
+              <tr><td>Equal weight</td><td>6.2%</td><td>9.1%</td><td>0.71</td><td>22.7%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="txt">Lower risk for lower return. The Sharpe advantage sits in the first half of the sample; in the second half equal weight wins.</p>
+      </div>
+    </section>
+
+    <section class="sec grid rv">
+      <h2>Screens</h2>
+      <div class="body">
+        <div class="gallery">
+          <figure><img src="assets/img/tative-home.webp" width="1600" height="1000" alt="Home dashboard with recent runs and data freshness" loading="lazy"><figcaption>Home: recent runs and data freshness</figcaption></figure>
+          <figure><img src="assets/img/tative-frontier.webp" width="1600" height="1000" alt="Efficient frontier with minimum variance and tangency portfolios" loading="lazy"><figcaption>Efficient frontier, in-sample</figcaption></figure>
+          <figure><img src="assets/img/tative-trading.webp" width="1600" height="1000" alt="Paper trading screen with kill switch and risk strip" loading="lazy"><figcaption>Paper trading: kill switch and risk limits</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec grid rv">
+      <h2>Status</h2>
+      <div class="body">
+        <p class="txt">Version 0.19.0, 33 development phases closed. Data, models, backtesting, optimiser, scheduled paper trading and tracking are built. Next: a declarative rule builder, long/short pairs in paper trading and option trading in paper. Nothing here is investment advice.</p>
+      </div>
+    </section>
+
+    <a class="next" href="thesis.html">
+      <span class="k"><span>Next project</span><span class="num">02</span></span>
+      <span class="t" style="view-transition-name: t-thesis">ARIMA vs LSTM</span>
+    </a>
+  </main>
+
+  <footer class="foot"><span>© 2026 Mateu Prats Munar</span><a href="index.html">Back to index</a></footer>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

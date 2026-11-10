@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CalTracker · Mateu Prats Munar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <a class="name" href="index.html">Mateu Prats Munar<span class="dot">.</span></a>
+    <span class="role">M.Sc. Mathematics, TUM</span>
+    <nav aria-label="Project"><a href="index.html#work">Index</a><a href="tative.html">Next →</a></nav>
+  </header>
+
+  <main>
+    <section class="p-head grid">
+      <span class="p-num num">03</span>
+      <h1 class="p-title" style="view-transition-name: t-cal">CalTracker</h1>
+      <dl class="p-meta">
+        <div><dt>Year</dt><dd>2026</dd></div>
+        <div><dt>Role</dt><dd>Solo: design, full stack, MCP server</dd></div>
+        <div><dt>Stack</dt><dd>Next.js, React, PostgreSQL, Prisma</dd></div>
+        <div><dt>Try it</dt><dd><a href="https://calorie-tracker-6k1d.vercel.app/demo">Live demo ↗</a></dd></div>
+      </dl>
+    </section>
+
+    <section class="statement grid">
+      <p>Most calorie trackers only count calories. CalTracker answers a broader question, did I have a good day, and removes the friction that makes people stop logging.</p>
+    </section>
+
+    <section class="hero reveal-clip phone-hero">
+      <video src="assets/caltracker-walkthrough.mp4" autoplay muted loop playsinline aria-label="Walkthrough on demo data: the day view, adding a food, the segments updating and the weekly view"></video>
+      <div class="side">
+        <p>Each day is a ring of five segments: nutrition, cardio, strength, steps and study. Fill all five and the ring turns gold.</p>
+        <p class="txt">The demo opens a private copy of the app with a fictitious week already filled in. Add dinner and watch the nutrition segment fill. It is deleted after 24 hours.</p>
+        <a class="btn" href="https://calorie-tracker-6k1d.vercel.app/demo">Try the live demo ↗</a>
+      </div>
+    </section>
+
+    <section class="sec grid rv">
+      <h2>What it does</h2>
+      <div class="body">
+        <div class="pairs">
+          <div><h3>Barcode instead of typing</h3><p>Scan a product with the phone camera or search Open Food Facts. Results are cached, so repeat scans work offline, and editing a serving recalculates every macro.</p></div>
+          <div><h3>Apple Health instead of forms</h3><p>An iOS Shortcut sends steps, energy and workouts to a protected endpoint. The importer reads localized numbers, is idempotent and removes workouts recorded twice by the gym app and the watch.</p></div>
+          <div><h3>A sentence instead of a screen</h3><p>"CalTracker, I swam 40 minutes" becomes an entry through fixed rules in English, Spanish and Catalan, with no AI model and no running cost.</p></div>
+          <div><h3>Scores you can re-run</h3><p>A day's score is a pure function of its inputs, computed on request. Change a threshold and the whole history is re-scored.</p></div>
+        </div>
+        <div class="gallery phones">
+          <figure><img src="assets/img/cal-day.webp" width="780" height="1688" alt="Day view with the five segments" loading="lazy"><figcaption>Day view</figcaption></figure>
+          <figure><img src="assets/img/cal-barcode.webp" width="780" height="1688" alt="Barcode scan result with macros" loading="lazy"><figcaption>Barcode result</figcaption></figure>
+          <figure><img src="assets/img/cal-calendar.webp" width="780" height="1688" alt="Calendar with streaks and day rings" loading="lazy"><figcaption>Calendar and streaks</figcaption></figure>
+          <figure><img src="assets/img/cal-weekly.webp" width="780" height="1688" alt="Weekly report" loading="lazy"><figcaption>Weekly report</figcaption></figure>
+        </div>
+        <p class="note">All screens use fictitious demo data.</p>
+      </div>
+    </section>
+
+    <section class="sec grid rv">
+      <h2>Talk to it through Claude</h2>
+      <div class="body">
+        <p class="lead">A remote MCP server with its own OAuth 2.1 authorization server lets Claude read and write the same data the app uses: 36 tools and 3 prompts.</p>
+        <div class="chat">
+          <div class="u">CalTracker I studied physics for 40 minutes. What's still missing for a perfect day?</div>
+          <div class="tool">calls <code>log_study_session</code> → Logged Physics, 40 min. Study segment: done.</div>
+          <div class="tool">calls <code>get_day</code> → 2 of 5 segments done: Steps, Study.</div>
+          <div class="a">Nice, Study is done. To reach a perfect day you need:
+            <ul><li>Nutrition: about 340 more kcal, dinner will do it.</li><li>Cardio: 20 minutes.</li><li>Strength: one session of at least 15 minutes.</li></ul>
+          </div>
+          <div class="u">250 g of chicken breast for dinner.</div>
+          <div class="tool">calls <code>search_foods</code>, then <code>log_food</code> → 250 g, 413 kcal. Nutrition segment: done.</div>
+          <div class="a">Logged. You're at 3 of 5: a 20-minute run and a short strength session would make it a perfect day.</div>
+        </div>
+        <p class="note">Real tool names and result lines; the conversation is illustrative and uses the demo persona's numbers.</p>
+      </div>
+    </section>
+
+    <section class="sec grid rv">
+      <h2>Engineering</h2>
+      <div class="body">
+        <div class="pairs">
+          <div><h3>One brain, four doors</h3><p>The web app, the Health import, the voice endpoint and every MCP tool call the same service layer, so behaviour never drifts apart.</p></div>
+          <div><h3>Security by construction</h3><p>OAuth 2.1 with PKCE and rotating refresh tokens, passkeys, and a test that fails the build if any route is left without an auth guard.</p></div>
+          <div><h3>A demo with real isolation</h3><p>A separate deployment and database, one Postgres schema per visitor, rate limits and row caps enforced by database triggers.</p></div>
+          <div><h3>Time is hard</h3><p>"Today" is computed in the owner's time zone, and the reminder planner is tested across the March and October clock changes.</p></div>
+        </div>
+        <div class="facts">
+          <div><b>1,935</b><span>tests, all passing</span></div>
+          <div><b>42k</b><span>lines of TypeScript</span></div>
+          <div><b>36</b><span>MCP tools</span></div>
+          <div><b>27</b><span>database models</span></div>
+        </div>
+      </div>
+    </section>
+
+    <a class="next" href="tative.html">
+      <span class="k"><span>Next project</span><span class="num">01</span></span>
+      <span class="t" style="view-transition-name: t-tative">Tative</span>
+    </a>
+  </main>
+
+  <footer class="foot"><span>© 2026 Mateu Prats Munar</span><a href="index.html">Back to index</a></footer>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>
