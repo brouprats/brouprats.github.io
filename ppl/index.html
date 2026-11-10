@@ -19,10 +19,7 @@
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
   }
   .mark { display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  .mark svg { width: 72px; height: 72px; }
-  .word { display: flex; flex-direction: column; line-height: .95; }
-  .word b { font-size: 34px; font-weight: 600; letter-spacing: -.02em; }
-  .word span { font-size: 13px; font-weight: 500; letter-spacing: .08em; align-self: flex-end; }
+  .mark .logo { width: clamp(120px, 18vw, 180px); height: auto; }
   .soon { color: var(--muted); font-size: 14px; text-align: center; }
   a { color: var(--fg); font-size: 14px; }
   a:hover { color: var(--muted); }
@@ -32,12 +29,7 @@
 <div class="page">
   <a href="../">← Entrance</a>
   <div class="mark">
-    <svg viewBox="0 0 100 100" aria-hidden="true">
-      <rect x="3" y="3" width="94" height="94" fill="none" stroke="#fff" stroke-width="4"></rect>
-      <path d="M32 82 V20 H56 a19 19 0 0 1 0 38 H32" fill="none" stroke="#fff" stroke-width="12"></path>
-      <path d="M32 82 V20 H56 a19 19 0 0 1 0 38 H32" fill="none" stroke="#000" stroke-width="2"></path>
-    </svg>
-    <div class="word"><b>People</b><span>PPL</span></div>
+    <img class="logo" src="assets/people-ppl-logo-white.svg" width="711" height="1103" alt="People PPL">
     <p class="soon">A visual journal. Iceland, Japan and China, coming soon.</p>
   </div>
   <span></span>
