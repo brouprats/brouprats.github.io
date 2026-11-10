@@ -42,8 +42,10 @@ h1, h2 { font-weight: 600; text-wrap: balance; }
 
 /* cover */
 .cover { position: relative; height: min(88vh, 980px); min-height: 520px; overflow: hidden; border-bottom: 1px solid var(--rule); background: var(--ink); }
-.cover > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: drift 24s ease-in-out infinite alternate; }
-@keyframes drift { from { transform: scale(1.02); } to { transform: scale(1.1) translate(-1.5%, -1%); } }
+.cover picture img, .cover video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* the loop starts on the poster frame, so it can simply fade in over it once it plays */
+.cover video { opacity: 0; transition: opacity .8s ease; }
+.cover video.on { opacity: 1; }
 .cover .over { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; color: #fff; padding-block: clamp(16px, 3vw, 36px); background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,0) 30%, rgba(0,0,0,0) 55%, rgba(0,0,0,.42)); }
 .cover .row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
 .cover h1 { font-size: clamp(84px, 17vw, 270px); line-height: .78; padding-bottom: .1em; letter-spacing: -.055em; animation: rise 1.2s var(--ease) .2s both; }
@@ -74,16 +76,15 @@ a.issue:hover .t { text-decoration: underline; text-underline-offset: 6px; text-
 .issue.soon .ph { display: grid; place-items: center; border: 1px dashed var(--muted); background: transparent; color: var(--muted); }
 .issue.soon .t { color: var(--muted); }
 
-/* contents */
-.toc { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 16px; padding-block: clamp(48px, 6vw, 88px); border-bottom: 1px solid var(--rule); }
-.toc .kicker { grid-column: span 3; }
-.toc ol { grid-column: span 9; list-style: none; margin: 0; padding: 0; font-size: clamp(22px, 2.4vw, 34px); letter-spacing: -.02em; }
-.toc li a, .toc li > span { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 16px; align-items: baseline; padding: 14px 0; border-top: 1px solid var(--rule); text-decoration: none; transition: background-color .2s, color .2s, padding .25s var(--ease); }
-.toc li:last-child a, .toc li:last-child > span { border-bottom: 1px solid var(--rule); }
-.toc li a:hover { background: var(--ink); color: var(--paper); padding-left: 12px; padding-right: 12px; }
-.toc .n { font-size: 13px; letter-spacing: .06em; }
-.toc li > span { color: var(--muted); }
-@media (max-width: 760px) { .toc .kicker, .toc ol { grid-column: 1 / -1; } }
+/* frames: a strip of photographs from every issue, scrolled sideways */
+.frames { padding-block: clamp(48px, 6vw, 88px); border-bottom: 1px solid var(--rule); }
+.strip { --h: clamp(240px, 34vw, 460px); display: flex; gap: clamp(12px, 2vw, 28px); overflow-x: auto; scroll-snap-type: x proximity; padding-inline: var(--gut) var(--gut-r); scroll-padding-inline: var(--gut); scrollbar-width: thin; scrollbar-color: var(--ink) transparent; padding-bottom: 16px; }
+@media (min-width: 900px) { .strip { padding-inline: max(40px, env(safe-area-inset-left, 0px)) max(40px, env(safe-area-inset-right, 0px)); scroll-padding-inline: 40px; } }
+.strip:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.strip a { flex: none; width: calc(var(--h) * var(--r)); display: flex; flex-direction: column; gap: 8px; text-decoration: none; scroll-snap-align: start; }
+.strip a img { width: 100%; height: var(--h); object-fit: cover; background: var(--paper-2); }
+.strip a .kicker { display: flex; justify-content: space-between; }
+.strip a:hover .kicker span:last-child { text-decoration: underline; text-underline-offset: 4px; }
 
 /* footer */
 .foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; padding-block: clamp(32px, 5vw, 64px) 28px; }

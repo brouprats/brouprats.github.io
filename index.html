@@ -8,6 +8,12 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Mateu Prats Munar</title>
 <meta name="description" content="Mateu Prats Munar. People PPL, photography and visual work. Academic, mathematics at TUM.">
+<meta property="og:title" content="Mateu Prats Munar">
+<meta property="og:description" content="Mateu Prats Munar. People PPL, photography and visual work. Academic, mathematics at TUM.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://brouprats.github.io/">
+<meta property="og:image" content="https://brouprats.github.io/ppl/assets/og-cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
@@ -44,6 +50,8 @@
   .ppl:hover, .ppl:focus-visible { border-color: var(--fg); }
   .ppl:hover img, .ppl:focus-visible img { opacity: 1; transform: scale(1); }
   .ppl:hover .shade, .ppl:focus-visible .shade { opacity: 1; }
+  /* no hover on touch screens: show the photo permanently */
+  @media (hover: none) { .ppl img, .ppl .shade { opacity: 1; } .ppl img { transform: none; } }
   .acad:hover, .acad:focus-visible { background: var(--light); color: #000; border-color: var(--light); }
   .door:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
   /* entrance animation: a hairline grows, then the two doors open from it */
