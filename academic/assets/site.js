@@ -17,6 +17,41 @@
     if (e.persisted) document.querySelectorAll('.exit-veil').forEach(function (n) { n.remove(); });
   });
 
+  /* in-page links (the masthead / header nav): glide to the section with a long ease-in-out instead of jumping.
+     The target is measured through offsetTop, which ignores the reveal transform, so it lands exactly where it settles. */
+  if (!reduced) {
+    var glide = null;
+    var stopGlide = function () { if (glide) { cancelAnimationFrame(glide); glide = null; } };
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (t) { addEventListener(t, stopGlide, { passive: true }); });
+    var pageTop = function (el) { var y = 0; while (el) { y += el.offsetTop; el = el.offsetParent; } return y; };
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      var id = a.getAttribute('href').slice(1), target = id && document.getElementById(id);
+      if (!target) return;
+      a.addEventListener('click', function (e) {
+        if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        stopGlide();
+        var from = window.pageYOffset, max = document.documentElement.scrollHeight - window.innerHeight;
+        var to = Math.max(0, Math.min(pageTop(target), max)), dist = to - from;
+        var settle = function () {
+          if (history.pushState && location.hash !== '#' + id) history.pushState(null, '', '#' + id);
+          target.setAttribute('tabindex', '-1');
+          target.focus({ preventScroll: true });
+        };
+        if (Math.abs(dist) < 2) { settle(); return; }
+        var dur = Math.min(1500, Math.max(800, Math.abs(dist) * 0.55)), t0 = null;
+        var step = function (now) {
+          if (t0 === null) t0 = now;
+          var p = Math.min(1, (now - t0) / dur);
+          var k = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;   /* easeInOutCubic */
+          window.scrollTo(0, from + dist * k);
+          if (p < 1) glide = requestAnimationFrame(step); else { glide = null; settle(); }
+        };
+        glide = requestAnimationFrame(step);
+      });
+    });
+  }
+
   var fine = window.matchMedia('(pointer: fine)').matches;
 
   /* reveal: only elements that start below the fold get hidden, so the first frame is complete */
