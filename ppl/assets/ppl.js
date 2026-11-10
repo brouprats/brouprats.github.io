@@ -13,25 +13,39 @@
     });
   }
 
-  /* arriving from the entrance: the stamped mark shrinks into the masthead while the paper lifts off the cover */
+  /* arriving from the entrance: the stamped mark shrinks into the masthead while the paper slides off the cover.
+     Only transforms are animated, and the cover video waits until this is over, so nothing competes with it. */
   var root = document.documentElement, brand = document.querySelector('.mast .brand img');
-  if (root.classList.contains('entering')) {
+  var entering = root.classList.contains('entering'), afterEnter = [];
+  if (entering) {
     var done = function () {
+      if (!entering) return;
+      entering = false;
       root.classList.remove('entering', 'entering-live');
       document.querySelectorAll('.enter-veil, .enter-mark').forEach(function (n) { n.remove(); });
+      afterEnter.forEach(function (f) { f(); });
     };
     if (!brand || !document.body.animate) done();
     else {
       var veil = document.createElement('div'); veil.className = 'enter-veil';
-      var mark = document.createElement('img'); mark.className = 'enter-mark'; mark.alt = ''; mark.src = brand.src;
+      /* inline copy of the mark: an <img> could show one empty frame while it decodes */
+      var box = document.createElement('div');
+      box.innerHTML = '<svg class="enter-mark" viewBox="0 0 590 591" fill="none" aria-hidden="true">' +
+        '<path d="M5 586H585V5H5V586Z" stroke-width="10" stroke="#25241F"/>' +
+        '<path d="M173.5 503.36V329.36M173.5 329.36V136.5H332C363.5 136.5 417.389 158.544 418.5 234.36C419.611 310.175 362.5 329.36 332 329.36H173.5Z" stroke-width="100" stroke="#25241F"/>' +
+        '<path d="M173.5 503.36V329.36M173.5 329.36V136.5H332C363.5 136.5 417.389 158.544 418.5 234.36C419.611 310.175 362.5 329.36 332 329.36H173.5Z" stroke-width="10" stroke="#F3F3F3"/></svg>';
+      var mark = box.firstChild;
       document.body.appendChild(veil); document.body.appendChild(mark);
       root.classList.add('entering-live');
-      var a = mark.getBoundingClientRect(), b = brand.getBoundingClientRect(), k = b.width / a.width;
-      var dx = (b.left + b.width / 2) - (a.left + a.width / 2), dy = (b.top + b.height / 2) - (a.top + a.height / 2);
-      var ease = 'cubic-bezier(.7, 0, .2, 1)';
-      veil.animate([{ clipPath: 'inset(0 0 0 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 900, delay: 200, easing: ease, fill: 'both' });
-      mark.animate([{ transform: 'translate(-50%, -50%)' }, { transform: 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) scale(' + k + ')' }], { duration: 900, delay: 120, easing: ease, fill: 'both' }).onfinish = done;
-      setTimeout(done, 2000);
+      /* let the page settle for two frames, then move */
+      requestAnimationFrame(function () { requestAnimationFrame(function () {
+        var a = mark.getBoundingClientRect(), b = brand.getBoundingClientRect(), k = b.width / a.width;
+        var dx = (b.left + b.width / 2) - (a.left + a.width / 2), dy = (b.top + b.height / 2) - (a.top + a.height / 2);
+        var ease = 'cubic-bezier(.65, 0, .2, 1)';
+        veil.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-100%)' }], { duration: 950, delay: 60, easing: ease, fill: 'both' });
+        mark.animate([{ transform: 'translate(-50%, -50%)' }, { transform: 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) scale(' + k + ')' }], { duration: 950, easing: ease, fill: 'both' }).onfinish = done;
+      }); });
+      setTimeout(done, 2200);
     }
   }
 
@@ -56,15 +70,18 @@
   var cv = document.querySelector('.cover video');
   var conn = navigator.connection || {};
   if (cv && !reduced && !conn.saveData) {
-    cv.addEventListener('playing', function () { cv.classList.add('on'); }, { once: true });
-    cv.preload = 'auto';
-    var p = cv.play();
-    if (p && p.catch) p.catch(function () {});
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) {
-        if (es[0].isIntersecting) { var q = cv.play(); if (q && q.catch) q.catch(function () {}); } else cv.pause();
-      }).observe(cv);
-    }
+    var startCover = function () {
+      cv.addEventListener('playing', function () { cv.classList.add('on'); }, { once: true });
+      cv.preload = 'auto';
+      var p = cv.play();
+      if (p && p.catch) p.catch(function () {});
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          if (es[0].isIntersecting) { var q = cv.play(); if (q && q.catch) q.catch(function () {}); } else cv.pause();
+        }).observe(cv);
+      }
+    };
+    if (entering) afterEnter.push(startCover); else startCover();
   }
 
   /* lightbox for every photo on the page */
