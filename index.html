@@ -68,15 +68,24 @@
   @keyframes open { from { clip-path: inset(50% 0 50% 0); } to { clip-path: inset(0 0 0 0); } }
   @keyframes up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  /* leaving through a door: a veil in the section's colour grows out of the door and fills the screen */
+  .veil { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; pointer-events: none; }
+  .veil svg { width: min(28vw, 120px); height: auto; overflow: visible; }
+  .veil svg path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .veil-title { position: fixed; z-index: 21; margin: 0; font-size: clamp(30px, 2.8vw, 40px); font-weight: 500; letter-spacing: -.03em; line-height: .95; transform-origin: 0 0; pointer-events: none; white-space: nowrap; }
+  /* coming back from a section */
+  html.back .page { animation: fade .5s ease both; }
+  html.back .door { animation: open .6s cubic-bezier(.7, 0, .2, 1) both; }
   @media (prefers-reduced-motion: reduce) { .door, .door * { transition: none !important; } }
 </style>
 <script>
   /* play the entrance once per visit; skipped with reduced motion */
   try {
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('mpm-intro')) {
-      document.documentElement.classList.add('intro');
-      sessionStorage.setItem('mpm-intro', '1');
-    }
+    var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!calm && sessionStorage.getItem('mpm-enter') === 'back') document.documentElement.classList.add('back');
+    else if (!calm && !sessionStorage.getItem('mpm-intro')) document.documentElement.classList.add('intro');
+    sessionStorage.setItem('mpm-intro', '1');
+    sessionStorage.removeItem('mpm-enter');
   } catch (e) {}
 </script>
 </head>
@@ -103,11 +112,65 @@
 <script>
   (function () {
     var root = document.documentElement;
+    if (root.classList.contains('back')) setTimeout(function () { root.classList.remove('back'); }, 900);
     if (!root.classList.contains('intro')) return;
     var end = function () { root.classList.remove('intro'); };
     var timer = setTimeout(end, 2400);
     ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) {
       addEventListener(ev, function () { clearTimeout(timer); end(); }, { once: true, passive: true });
+    });
+  })();
+</script>
+<script>
+  /* door transitions: People PPL stamps its logo on paper, Academic inverts to its page colour */
+  (function () {
+    var EASE = 'cubic-bezier(.7, 0, .2, 1)';
+    var MARK = '<svg viewBox="0 0 590 591" fill="none" aria-hidden="true">' +
+      '<path pathLength="1" d="M5 586H585V5H5V586Z" stroke-width="10" stroke="#25241F"/>' +
+      '<path pathLength="1" d="M173.5 503.36V329.36M173.5 329.36V136.5H332C363.5 136.5 417.389 158.544 418.5 234.36C419.611 310.175 362.5 329.36 332 329.36H173.5Z" stroke-width="100" stroke="#25241F"/>' +
+      '<path pathLength="1" d="M173.5 503.36V329.36M173.5 329.36V136.5H332C363.5 136.5 417.389 158.544 418.5 234.36C419.611 310.175 362.5 329.36 332 329.36H173.5Z" stroke-width="10" stroke="#F3F3F3"/></svg>';
+    var busy = false;
+    function inset(r) { return 'inset(' + r.top + 'px ' + (innerWidth - r.right) + 'px ' + (innerHeight - r.bottom) + 'px ' + r.left + 'px)'; }
+    function leave(a, kind, e) {
+      if (busy || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches || !document.body.animate) return;
+      e.preventDefault(); busy = true;
+      try { sessionStorage.setItem('mpm-enter', kind); } catch (x) {}
+      var go = function () { location.href = a.href; };
+      var r = a.getBoundingClientRect();
+      var veil = document.createElement('div'); veil.className = 'veil';
+      document.body.appendChild(veil);
+      if (kind === 'ppl') {
+        veil.style.background = '#f0ece1';
+        veil.innerHTML = MARK;
+        veil.animate([{ clipPath: inset(r), opacity: 0 }, { clipPath: inset(r), opacity: 1, offset: .18 }, { clipPath: 'inset(0px)', opacity: 1 }], { duration: 620, easing: EASE, fill: 'both' });
+        var p = veil.querySelectorAll('path'), draw = function (el, d, t) { return el.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: t, delay: d, easing: 'cubic-bezier(.5, 0, .2, 1)', fill: 'both' }); };
+        draw(p[0], 300, 480); draw(p[1], 520, 480);
+        draw(p[2], 640, 420).onfinish = function () { setTimeout(go, 80); };
+      } else {
+        var dark = matchMedia('(prefers-color-scheme: dark)').matches;
+        var bg = dark ? '#0f0f0f' : '#ffffff', fg = dark ? '#f1f1ef' : '#111111';
+        var t = a.querySelector('.title'), tr = t.getBoundingClientRect();
+        var ghost = document.createElement('p'); ghost.className = 'veil-title'; ghost.textContent = t.textContent;
+        ghost.style.cssText = 'left:' + tr.left + 'px;top:' + tr.top + 'px;color:' + fg;
+        document.body.appendChild(ghost);
+        var gut = innerWidth >= 900 ? 48 : 16;
+        veil.animate([{ clipPath: inset(r), background: dark ? '#000000' : '#ecebe6' }, { clipPath: 'inset(0px)', background: bg }], { duration: 620, easing: EASE, fill: 'both' });
+        ghost.animate([{ transform: 'none', opacity: 1 }, { opacity: 1, offset: .55 }, { transform: 'translate(' + (gut - tr.left) + 'px,' + (24 - tr.top) + 'px) scale(.4)', opacity: 0 }], { duration: 620, easing: EASE, fill: 'both' }).onfinish = go;
+      }
+    }
+    [['.ppl', 'ppl'], ['.acad', 'acad']].forEach(function (d) {
+      var a = document.querySelector(d[0]);
+      a.addEventListener('click', function (e) { leave(a, d[1], e); });
+      /* fetch the section early so the page is ready when the veil closes */
+      var warm = function () { var l = document.createElement('link'); l.rel = 'prefetch'; l.href = a.href; document.head.appendChild(l); };
+      ['pointerenter', 'touchstart', 'focus'].forEach(function (ev) { a.addEventListener(ev, warm, { once: true, passive: true }); });
+    });
+    /* back button restores this page from cache: clear whatever the last exit left on screen */
+    addEventListener('pageshow', function (e) {
+      if (!e.persisted) return;
+      busy = false;
+      document.querySelectorAll('.veil, .veil-title').forEach(function (n) { n.remove(); });
     });
   })();
 </script>

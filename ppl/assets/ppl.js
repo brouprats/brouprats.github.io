@@ -13,6 +13,45 @@
     });
   }
 
+  /* arriving from the entrance: the stamped mark shrinks into the masthead while the paper lifts off the cover */
+  var root = document.documentElement, brand = document.querySelector('.mast .brand img');
+  if (root.classList.contains('entering')) {
+    var done = function () {
+      root.classList.remove('entering', 'entering-live');
+      document.querySelectorAll('.enter-veil, .enter-mark').forEach(function (n) { n.remove(); });
+    };
+    if (!brand || !document.body.animate) done();
+    else {
+      var veil = document.createElement('div'); veil.className = 'enter-veil';
+      var mark = document.createElement('img'); mark.className = 'enter-mark'; mark.alt = ''; mark.src = brand.src;
+      document.body.appendChild(veil); document.body.appendChild(mark);
+      root.classList.add('entering-live');
+      var a = mark.getBoundingClientRect(), b = brand.getBoundingClientRect(), k = b.width / a.width;
+      var dx = (b.left + b.width / 2) - (a.left + a.width / 2), dy = (b.top + b.height / 2) - (a.top + a.height / 2);
+      var ease = 'cubic-bezier(.7, 0, .2, 1)';
+      veil.animate([{ clipPath: 'inset(0 0 0 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 900, delay: 200, easing: ease, fill: 'both' });
+      mark.animate([{ transform: 'translate(-50%, -50%)' }, { transform: 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) scale(' + k + ')' }], { duration: 900, delay: 120, easing: ease, fill: 'both' }).onfinish = done;
+      setTimeout(done, 2000);
+    }
+  }
+
+  /* back to the entrance: fade to its black, and let it know where we came from */
+  document.querySelectorAll('a[href="../"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (reduced || !document.body.animate || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      try { sessionStorage.setItem('mpm-enter', 'back'); } catch (x) {}
+      var v = document.createElement('div');
+      v.className = 'exit-veil';
+      v.style.cssText = 'position:fixed;inset:0;z-index:200;background:#000';
+      document.body.appendChild(v);
+      v.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 380, easing: 'ease', fill: 'both' }).onfinish = function () { location.href = a.href; };
+    });
+  });
+  addEventListener('pageshow', function (e) {
+    if (e.persisted) document.querySelectorAll('.exit-veil').forEach(function (n) { n.remove(); });
+  });
+
   /* cover loop: only with motion allowed and no data saver; the poster stays otherwise */
   var cv = document.querySelector('.cover video');
   var conn = navigator.connection || {};
