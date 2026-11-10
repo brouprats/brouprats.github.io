@@ -161,6 +161,14 @@ a.issue:hover .t { text-decoration: underline; text-underline-offset: 6px; text-
 .rv-pending { opacity: 0; transform: translateY(24px); }
 .rv-in { opacity: 1; transform: none; transition: opacity 1s var(--ease), transform 1s var(--ease); }
 
+/* arriving from the entrance: paper with the mark stamped in the centre, exactly where the entrance left it.
+   Drawn with pseudo-elements so it is there on first paint; ppl.js then flies the mark to the masthead. */
+html.entering:not(.entering-live) body::before { content: ''; position: fixed; inset: 0; z-index: 90; background: var(--paper); }
+html.entering:not(.entering-live) body::after { content: ''; position: fixed; left: 50%; top: 50%; z-index: 91; width: min(28vw, 120px); aspect-ratio: 590 / 591; transform: translate(-50%, -50%); background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTkwIiBoZWlnaHQ9IjU5MSIgdmlld0JveD0iMCAwIDU5MCA1OTEiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTUgNTg2SDU4NVY1SDVWNTg2WiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlPSIjMjUyNDFGIi8+PHBhdGggZD0iTTE3My41IDUwMy4zNlYzMjkuMzZNMTczLjUgMzI5LjM2VjEzNi41SDMzMkMzNjMuNSAxMzYuNSA0MTcuMzg5IDE1OC41NDQgNDE4LjUgMjM0LjM2QzQxOS42MTEgMzEwLjE3NSAzNjIuNSAzMjkuMzYgMzMyIDMyOS4zNkgxNzMuNVoiIHN0cm9rZS13aWR0aD0iMTAwIiBzdHJva2U9IiMyNTI0MUYiLz48cGF0aCBkPSJNMTczLjUgNTAzLjM2VjMyOS4zNk0xNzMuNSAzMjkuMzZWMTM2LjVIMzMyQzM2My41IDEzNi41IDQxNy4zODkgMTU4LjU0NCA0MTguNSAyMzQuMzZDNDE5LjYxMSAzMTAuMTc1IDM2Mi41IDMyOS4zNiAzMzIgMzI5LjM2SDE3My41WiIgc3Ryb2tlLXdpZHRoPSIxMCIgc3Ryb2tlPSIjRjNGM0YzIi8+PC9zdmc+") center / contain no-repeat; }
+html.entering .mast .brand img { visibility: hidden; }
+.enter-veil { position: fixed; inset: 0; z-index: 90; background: var(--paper); pointer-events: none; }
+.enter-mark { position: fixed; left: 50%; top: 50%; z-index: 91; width: min(28vw, 120px); height: auto; transform: translate(-50%, -50%); pointer-events: none; }
+
 ::view-transition-old(root) { animation: vt-out .35s var(--ease) both; }
 ::view-transition-new(root) { animation: vt-in .6s var(--ease) .1s both; }
 ::view-transition-group(*) { animation-duration: .7s; animation-timing-function: var(--ease); }

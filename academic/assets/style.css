@@ -57,8 +57,13 @@ p { margin: 0; }
 .site .role { grid-column: span 4; color: var(--muted); }
 .site nav { grid-column: span 4; display: flex; gap: 20px; justify-content: flex-end; flex-wrap: wrap; }
 .site nav a { text-decoration: none; }
+.site nav .quiet { color: var(--muted); }
+.site nav .quiet:hover { color: inherit; }
 @media (max-width: 700px) {
-  .site .name { grid-column: span 7; } .site .role { display: none; } .site nav { grid-column: span 5; gap: 14px; }
+  .site { row-gap: 12px; }
+  .site .name { grid-column: 1 / -1; } .site .role { display: none; }
+  .site nav { grid-column: 1 / -1; justify-content: flex-start; gap: 18px; }
+  .site nav .quiet { margin-left: auto; }
 }
 
 /* home */
@@ -307,6 +312,14 @@ footer.foot { border-top: 1px solid var(--line); padding-block: 22px 36px; displ
 ::view-transition-group(*) { animation-duration: .7s; animation-timing-function: var(--ease); }
 @keyframes vt-out { to { opacity: 0; transform: translateY(-12px); } }
 @keyframes vt-in { from { opacity: 0; transform: translateY(16px); } }
+
+/* arriving from the entrance: the page colour is already on screen, so the content rises into it */
+html.entering .site, html.entering .intro > *, html.entering #work { animation: enter-up .9s var(--ease) both; }
+html.entering .intro h1 { animation-delay: .08s; }
+html.entering .intro .status { animation-delay: .2s; }
+html.entering .intro .actions { animation-delay: .28s; }
+html.entering #work { animation-delay: .38s; }
+@keyframes enter-up { from { opacity: 0; transform: translateY(26px); } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

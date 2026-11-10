@@ -1,5 +1,22 @@
 (function () {
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* back to the entrance: fade to its black, and let it know where we came from */
+  document.querySelectorAll('a[href="../"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (reduced || !document.body.animate || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      try { sessionStorage.setItem('mpm-enter', 'back'); } catch (x) {}
+      var v = document.createElement('div');
+      v.className = 'exit-veil';
+      v.style.cssText = 'position:fixed;inset:0;z-index:200;background:#000';
+      document.body.appendChild(v);
+      v.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 380, easing: 'ease', fill: 'both' }).onfinish = function () { location.href = a.href; };
+    });
+  });
+  addEventListener('pageshow', function (e) {
+    if (e.persisted) document.querySelectorAll('.exit-veil').forEach(function (n) { n.remove(); });
+  });
+
   var fine = window.matchMedia('(pointer: fine)').matches;
 
   /* reveal: only elements that start below the fold get hidden, so the first frame is complete */

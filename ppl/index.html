@@ -18,6 +18,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
 <link rel="stylesheet" href="assets/ppl.css">
+<script>
+  /* arriving through the entrance door: continue its transition (see assets/ppl.js) */
+  try {
+    if (sessionStorage.getItem('mpm-enter') === 'ppl') {
+      sessionStorage.removeItem('mpm-enter');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('entering');
+    }
+  } catch (e) {}
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -27,7 +36,7 @@
   </header>
   <section class="cover bleed" aria-label="Cover">
     <picture>
-      <source media="(max-aspect-ratio: 4/5)" srcset="assets/cover-v-poster.webp" width="720" height="1280">
+      <source media="(max-aspect-ratio: 4/5)" srcset="assets/cover-v-poster.webp" width="1080" height="1920">
       <img src="assets/cover-poster.webp" width="1920" height="1080" alt="Still lake reflecting green peaks under a blue sky, Japan" fetchpriority="high">
     </picture>
     <video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">

@@ -18,6 +18,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/style.css">
+<script>
+  /* arriving through the entrance door: continue its transition (see assets/style.css) */
+  try {
+    if (sessionStorage.getItem('mpm-enter') === 'acad') {
+      sessionStorage.removeItem('mpm-enter');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('entering');
+    }
+  } catch (e) {}
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -28,7 +37,7 @@
       <a href="#work">Work</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
-    </nav>
+    <a class="quiet" href="../">← Entrance</a></nav>
   </header>
 
   <main>
