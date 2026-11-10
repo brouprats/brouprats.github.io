@@ -44,6 +44,8 @@
   .ppl:hover, .ppl:focus-visible { border-color: var(--fg); }
   .ppl:hover img, .ppl:focus-visible img { opacity: 1; transform: scale(1); }
   .ppl:hover .shade, .ppl:focus-visible .shade { opacity: 1; }
+  /* no hover on touch screens: show the photo permanently */
+  @media (hover: none) { .ppl img, .ppl .shade { opacity: 1; } .ppl img { transform: none; } }
   .acad:hover, .acad:focus-visible { background: var(--light); color: #000; border-color: var(--light); }
   .door:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
   /* entrance animation: a hairline grows, then the two doors open from it */
