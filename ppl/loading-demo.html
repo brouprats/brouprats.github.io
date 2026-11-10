@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Proves de càrrega · People PPL</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/ppl-mark-cream.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="assets/ppl.css">
+<style>
+  /* Temporary page: four ways to fill the wait while the cover video downloads. Not linked from anywhere. */
+  .cover h1, .cover .dek { animation: none; }
+  .cover { --p: 0; }
+
+  /* 1. coordinates typed out */
+  .coords { position: absolute; right: 0; top: 50%; z-index: 2; transform: translateY(-50%); font-family: var(--ff-mono); font-size: 14px; line-height: 1.5; color: #fff; text-align: right; white-space: pre; text-shadow: 0 1px 12px rgba(0,0,0,.35); display: none; }
+  .coords::after { content: ''; display: inline-block; width: .55em; height: 1.05em; margin-left: 3px; vertical-align: -.18em; background: #fff; animation: caret 1s steps(1) infinite; }
+  .coords.still::after { display: none; }
+  @keyframes caret { 50% { opacity: 0; } }
+  .m1 .coords, .m5 .coords { display: block; }
+  @media (max-width: 700px) { .coords { top: 22%; font-size: 12px; } }
+
+  /* 2. the photograph develops */
+  .m2 .cover picture img, .m5 .cover picture img {
+    filter: grayscale(calc(1 - var(--p))) blur(calc((1 - var(--p)) * 7px)) contrast(calc(.78 + var(--p) * .22)) brightness(calc(1.12 - var(--p) * .12));
+    transform: scale(1.03);
+  }
+
+  /* 3. contact sheet */
+  .sheet { position: absolute; left: 0; bottom: calc(100% + 18px); display: none; gap: 8px; }
+  .sheet span { display: flex; flex-direction: column; gap: 5px; font-family: var(--ff-mono); font-size: 11px; color: #fff; opacity: .35; transition: opacity .6s ease; }
+  .sheet img { width: clamp(52px, 7.2vw, 104px); aspect-ratio: 16 / 10; object-fit: cover; filter: grayscale(1) brightness(.55); outline: 1px solid rgba(255,255,255,.55); transition: filter .7s ease; }
+  .sheet span.lit { opacity: 1; }
+  .sheet span.lit img { filter: none; }
+  .m3 .sheet { display: flex; }
+  .cover .row.low { position: relative; }
+
+  /* 4. the headline fills */
+  .m4 .cover h1 {
+    color: transparent; -webkit-text-stroke: 1.5px #fff;
+    background: linear-gradient(to top, #fff calc(var(--p) * 100%), transparent calc(var(--p) * 100%)) text;
+    -webkit-background-clip: text; background-clip: text;
+  }
+
+  /* everything steps aside once the video plays */
+  .cover.playing .sheet { opacity: 0; transition: opacity .8s ease; }
+
+  .lab { padding-block: 28px 40px; }
+  .lab h2 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; margin-bottom: 6px; }
+  .lab p { max-width: 62ch; color: var(--ink-2); margin-bottom: 18px; }
+  .lab .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .lab button { font: inherit; font-size: 14px; color: var(--ink); background: none; border: 1px solid var(--ink); min-height: 44px; padding: 0 16px; cursor: pointer; }
+  .lab button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .lab .time { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; }
+  .lab .time button { min-height: 36px; padding: 0 12px; }
+  .lab .desc { margin-top: 18px; font-family: var(--ff-mono); font-size: 13px; color: var(--ink-2); min-height: 3em; max-width: 70ch; }
+</style>
+</head>
+<body class="m1">
+<div class="wrap">
+  <header class="mast">
+    <a class="brand" href="index.html" aria-label="People PPL home"><img src="assets/ppl-mark.svg" width="590" height="591" alt=""><span class="word"><b>People</b><span>PPL</span></span></a>
+    <nav aria-label="People PPL"><a href="index.html">Tornar a People PPL</a></nav>
+  </header>
+  <section class="cover bleed" aria-label="Cover">
+    <picture>
+      <source media="(max-aspect-ratio: 4/5)" srcset="assets/cover-v-poster.webp">
+      <img src="assets/cover-poster.webp" alt="">
+    </picture>
+    <video muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
+      <source media="(max-aspect-ratio: 4/5)" src="assets/cover-v.webm" type="video/webm">
+      <source media="(max-aspect-ratio: 4/5)" src="assets/cover-v.mp4" type="video/mp4">
+      <source src="assets/cover.webm" type="video/webm">
+      <source src="assets/cover.mp4" type="video/mp4">
+    </video>
+    <div class="over wrap">
+      <div class="row kicker"><span>No. 01 — 03</span><span>Iceland · Japan · China</span></div>
+      <div class="row low">
+        <div class="sheet" aria-hidden="true">
+          <span><img src="assets/demo/shot-1.webp" alt="">01</span><span><img src="assets/demo/shot-2.webp" alt="">02</span><span><img src="assets/demo/shot-3.webp" alt="">03</span><span><img src="assets/demo/shot-4.webp" alt="">04</span><span><img src="assets/demo/shot-5.webp" alt="">05</span>
+        </div>
+        <h1>People</h1><p class="dek">A visual journal, one country per issue.</p>
+        <p class="coords" aria-hidden="true"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lab">
+    <h2>Proves d'animació de càrrega</h2>
+    <p>Aquesta pàgina simula l'espera mentre es descarrega el vídeo. Tria una proposta; l'espera es repeteix des del principi i al final arrenca el vídeo.</p>
+    <div class="opts" role="group" aria-label="Proposta">
+      <button type="button" data-m="1" aria-pressed="true">1 · Coordenades</button>
+      <button type="button" data-m="2" aria-pressed="false">2 · Revelat</button>
+      <button type="button" data-m="3" aria-pressed="false">3 · Full de contactes</button>
+      <button type="button" data-m="4" aria-pressed="false">4 · Titular</button>
+      <button type="button" data-m="5" aria-pressed="false">1 + 2</button>
+    </div>
+    <div class="time" role="group" aria-label="Durada de l'espera">
+      <span>Espera simulada:</span>
+      <button type="button" data-t="4" aria-pressed="false">4 s</button>
+      <button type="button" data-t="8" aria-pressed="true">8 s</button>
+      <button type="button" data-t="14" aria-pressed="false">14 s</button>
+    </div>
+    <p class="desc"></p>
+  </section>
+</div>
+<script>
+(function () {
+  var cover = document.querySelector('.cover'), video = cover.querySelector('video'), coords = cover.querySelector('.coords');
+  var cells = cover.querySelectorAll('.sheet span'), desc = document.querySelector('.desc');
+  var PLACES = ['36.2289 N  137.6194 E\nKamikochi, Japan', '36.5627 N  136.6611 E\nKanazawa, Japan', '36.7329 N  138.4625 E\nJigokudani, Japan', '26.6945 N  127.8778 E\nOkinawa, Japan', '29.5577 N  103.3440 E\nEmeishan, China'];
+  var DESC = {
+    1: "1 · Els llocs del vídeo s'escriuen amb les seves coordenades. Quan el vídeo arrenca, el text passa a ser el peu de cada pla.",
+    2: "2 · El primer fotograma comença en blanc i negre i desenfocat, i guanya color i nitidesa a mesura que avança la descàrrega.",
+    3: "3 · Cinc miniatures, una per pla, que s'encenen d'una en una. Desapareixen quan el vídeo arrenca.",
+    4: "4 · El titular comença només amb el contorn i s'omple de baix a dalt amb el progrés.",
+    5: "1 + 2 · La imatge es revela mentre s'escriuen les coordenades."
+  };
+  var mode = 1, wait = 8, run = 0;
+
+  function type(text, token, done) {
+    var i = 0; coords.classList.remove('still');
+    (function step() {
+      if (token !== run) return;
+      coords.textContent = text.slice(0, i);
+      if (i++ < text.length) setTimeout(step, 34); else if (done) done();
+    })();
+  }
+  function start() {
+    var token = ++run, t0 = performance.now(), place = 0;
+    video.pause(); video.currentTime = 0; video.classList.remove('on'); cover.classList.remove('playing');
+    cells.forEach(function (c) { c.classList.remove('lit'); });
+    coords.textContent = ''; coords.classList.remove('still');
+    desc.textContent = DESC[mode];
+    document.body.className = 'm' + mode;
+    var typing = mode === 1 || mode === 5;
+    if (typing) (function next() {
+      if (token !== run || cover.classList.contains('playing')) return;
+      type(PLACES[place % PLACES.length], token, function () { place++; setTimeout(next, 1500); });
+    })();
+    (function frame(now) {
+      if (token !== run) return;
+      var p = Math.min(1, (now - t0) / (wait * 1000));
+      cover.style.setProperty('--p', p.toFixed(4));
+      cells.forEach(function (c, i) { c.classList.toggle('lit', p >= (i + 1) / cells.length - .02); });
+      if (p < 1) return requestAnimationFrame(frame);
+      /* download finished: the video takes over */
+      cover.classList.add('playing'); video.classList.add('on');
+      var q = video.play(); if (q && q.catch) q.catch(function () {});
+      if (typing) { var last = -1;
+        (function caption() {
+          if (token !== run) return;
+          /* each shot runs 2.8 s; switch in the middle of the dissolve */
+          var k = Math.floor(((video.currentTime + .4) % 14) / 2.8) % 5;
+          if (k !== last) { last = k; type(PLACES[k], token, function () { coords.classList.add('still'); }); }
+          requestAnimationFrame(caption);
+        })();
+      }
+    })(t0);
+  }
+  function press(group, btn) { group.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); }); }
+  var ms = document.querySelectorAll('[data-m]'), ts = document.querySelectorAll('[data-t]');
+  ms.forEach(function (b) { b.addEventListener('click', function () { mode = +b.dataset.m; press(ms, b); start(); scrollTo({ top: 0, behavior: 'smooth' }); }); });
+  ts.forEach(function (b) { b.addEventListener('click', function () { wait = +b.dataset.t; press(ts, b); start(); scrollTo({ top: 0, behavior: 'smooth' }); }); });
+  start();
+})();
+</script>
+</body>
+</html>
