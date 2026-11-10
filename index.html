@@ -43,14 +43,38 @@
   .ppl:hover .shade, .ppl:focus-visible .shade { opacity: 1; }
   .acad:hover, .acad:focus-visible { background: var(--light); color: #000; border-color: var(--light); }
   .door:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+  /* entrance animation: a hairline grows, then the two doors open from it */
+  .doors { position: relative; }
+  .intro-line { position: absolute; left: 50%; top: 50%; width: min(100%, 708px); height: 1px; background: var(--fg); opacity: 0; transform: translate(-50%, -50%) scaleX(0); pointer-events: none; }
+  html.intro .intro-line { animation: line .75s cubic-bezier(.7, 0, .2, 1) .15s both, gone .35s ease 1.15s forwards; }
+  html.intro .door { animation: open .8s cubic-bezier(.7, 0, .2, 1) .75s both; }
+  html.intro .acad { animation-delay: .85s; }
+  html.intro .door .top { animation: up .6s cubic-bezier(.2, .7, .1, 1) 1.35s both; }
+  html.intro .door .bottom { animation: up .7s cubic-bezier(.2, .7, .1, 1) 1.45s both; }
+  html.intro .bar { animation: fade .7s ease 1.6s both; }
+  @keyframes line { from { opacity: 1; transform: translate(-50%, -50%) scaleX(0); } to { opacity: 1; transform: translate(-50%, -50%) scaleX(1); } }
+  @keyframes gone { from { opacity: 1; transform: translate(-50%, -50%) scaleX(1); } to { opacity: 0; transform: translate(-50%, -50%) scaleX(1); } }
+  @keyframes open { from { clip-path: inset(50% 0 50% 0); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { .door, .door * { transition: none !important; } }
 </style>
+<script>
+  /* play the entrance once per visit; skipped with reduced motion */
+  try {
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('mpm-intro')) {
+      document.documentElement.classList.add('intro');
+      sessionStorage.setItem('mpm-intro', '1');
+    }
+  } catch (e) {}
+</script>
 </head>
 <body>
 <div class="page">
   <div class="bar"><span>Mateu Prats Munar</span><span>Munich · Mallorca</span></div>
 
   <nav class="doors" aria-label="Choose a section">
+    <span class="intro-line" aria-hidden="true"></span>
     <a class="door ppl" href="ppl/">
       <img src="assets/landing-ppl.webp" alt="" width="1200" height="900">
       <span class="shade"></span>
@@ -65,5 +89,16 @@
 
   <div class="bar low"><span>© 2026</span><span>Select an entrance</span></div>
 </div>
+<script>
+  (function () {
+    var root = document.documentElement;
+    if (!root.classList.contains('intro')) return;
+    var end = function () { root.classList.remove('intro'); };
+    var timer = setTimeout(end, 2400);
+    ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) {
+      addEventListener(ev, function () { clearTimeout(timer); end(); }, { once: true, passive: true });
+    });
+  })();
+</script>
 </body>
 </html>

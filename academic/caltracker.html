@@ -34,7 +34,10 @@
     </section>
 
     <section class="hero reveal-clip phone-hero">
-      <video src="assets/caltracker-walkthrough.mp4" autoplay muted loop playsinline aria-label="Walkthrough on demo data: the day view, adding a food, the segments updating and the weekly view"></video>
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/caltracker-poster.jpg" width="780" height="1688" aria-label="Walkthrough on demo data: the calendar, the day view, adding a dinner, the segments updating and the weekly report">
+        <source src="assets/caltracker-walkthrough.webm" type="video/webm">
+        <source src="assets/caltracker-walkthrough.mp4" type="video/mp4">
+      </video>
       <div class="side">
         <p>Each day is a ring of five segments: nutrition, cardio, strength, steps and study. Fill all five and the ring turns gold.</p>
         <p class="txt">The demo opens a private copy of the app with a fictitious week already filled in. Add dinner and watch the nutrition segment fill. It is deleted after 24 hours.</p>
