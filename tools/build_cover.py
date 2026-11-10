@@ -15,21 +15,19 @@ import sys
 # (file, start in seconds, horizontal centre of the portrait crop: 0 left .. 1 right)
 CLIPS = [
     ('IMG_1058.MOV', 1.0, 0.45),   # Japan: lake reflecting the peaks
-    ('IMG_1418.MOV', 1.6, 0.60),   # Japan: garden pond and stone lantern
-    ('IMG_0782.MOV', 2.0, 0.55),   # Japan: macaque in the grass
+    ('IMG_1418.MOV', 1.6, 0.72),   # Japan: garden pond and stone lantern
     ('IMG_4587.MOV', 3.6, 0.55),   # Japan: whale shark
-    ('IMG_5932.MOV', 0.1, 0.50),   # China: peaks under a broken sky
     ('IMG_6367.MOV', 7.6, 0.50),   # China: mist over the forest
     ('IMG_6369.MOV', 0.4, 0.70),   # China: temple eaves above the clouds
-    ('IMG_5540.MOV', 0.2, 0.35),   # China: towers
 ]
+# left out to keep the loop short: IMG_0782 (macaque), IMG_5932 (peaks), IMG_5540 (towers)
 SHOT = 3.6    # seconds each shot is taken for, dissolves included
 X = 0.8       # dissolve length, seconds
 FPS = 25
 # name: (width, height, mp4 bitrate cap, webm target), bitrates in kbit/s
 OUTPUTS = {
-    'cover': (1920, 1080, 3600, 2600),
-    'cover-v': (720, 1280, 1500, 1100),
+    'cover': (1920, 1080, 7000, 5000),
+    'cover-v': (1080, 1920, 4500, 3200),
 }
 
 src, out = sys.argv[1], sys.argv[2]
@@ -68,13 +66,13 @@ def master(name, w, h):
 
 for name, (w, h, mp4k, webmk) in OUTPUTS.items():
     m = master(name, w, h)
-    run('ffmpeg', '-v', 'error', '-y', '-i', m, '-an', '-c:v', 'libx264', '-crf', '21',
-        '-maxrate', f'{mp4k}k', '-bufsize', f'{mp4k * 2}k', '-preset', 'slower', '-profile:v', 'high',
+    run('ffmpeg', '-v', 'error', '-y', '-i', m, '-an', '-c:v', 'libx264', '-crf', '18',
+        '-maxrate', f'{mp4k}k', '-bufsize', f'{mp4k * 2}k', '-preset', 'veryslow', '-profile:v', 'high',
         '-pix_fmt', 'yuv420p', '-movflags', '+faststart', f'{out}/{name}.mp4')
     for n in ('1', '2'):
         dest = ['-f', 'null', '/dev/null'] if n == '1' else [f'{out}/{name}.webm']
         run('ffmpeg', '-v', 'error', '-y', '-i', m, '-an', '-c:v', 'libvpx-vp9', '-b:v', f'{webmk}k',
-            '-row-mt', '1', '-cpu-used', '2', '-pass', n, '-passlogfile', os.path.join(work, name), *dest)
-    run('ffmpeg', '-v', 'error', '-y', '-i', m, '-frames:v', '1', '-c:v', 'libwebp', '-quality', '82',
+            '-row-mt', '1', '-cpu-used', '1', '-auto-alt-ref', '1', '-lag-in-frames', '25', '-pass', n, '-passlogfile', os.path.join(work, name), *dest)
+    run('ffmpeg', '-v', 'error', '-y', '-i', m, '-frames:v', '1', '-c:v', 'libwebp', '-quality', '90',
         f'{out}/{name}-poster.webp')
     print(name, 'done')

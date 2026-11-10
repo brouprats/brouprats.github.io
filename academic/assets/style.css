@@ -57,8 +57,13 @@ p { margin: 0; }
 .site .role { grid-column: span 4; color: var(--muted); }
 .site nav { grid-column: span 4; display: flex; gap: 20px; justify-content: flex-end; flex-wrap: wrap; }
 .site nav a { text-decoration: none; }
+.site nav .quiet { color: var(--muted); }
+.site nav .quiet:hover { color: inherit; }
 @media (max-width: 700px) {
-  .site .name { grid-column: span 7; } .site .role { display: none; } .site nav { grid-column: span 5; gap: 14px; }
+  .site { row-gap: 12px; }
+  .site .name { grid-column: 1 / -1; } .site .role { display: none; }
+  .site nav { grid-column: 1 / -1; justify-content: flex-start; gap: 18px; }
+  .site nav .quiet { margin-left: auto; }
 }
 
 /* home */
